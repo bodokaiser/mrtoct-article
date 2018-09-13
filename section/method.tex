@@ -4,14 +4,20 @@ In the consecutive parts we discuss the parameters relevant for the conducted
 experiments. This includes decisions we made for the setup as a whole
 (dataset, pre processing) but also detail decisions regarding for example
 the implementation of a specific model. The source code based on the
-Tensorflow framework \cite{tensorflow15} will be made available through
-GitHub after acceptance.
+Tensorflow framework~\cite{tensorflow15} will be made available through
+GitHub.
 
-\subsection{Data}
+\subsection{Dataset and preprocessing}
 
-We used the publicly available dataset from RIRE \cite{RIRE} which contains
-contains multi modality data of about 19 patients from which a subset
+We used the publicly available dataset from the \gls{RIRE} project~\cite{RIRE},
+which contains multi modality data of about 19 patients from which a subset
 of 17 patients have a complete pair of T1 weighted MR and CT volume.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figure/conversion.pdf}
+  \caption{Dataset conversion from \gls{mhd} to \gls{nifti} format.
+	}\label{fig:conversion}
+\end{figure}
 
 We were able to co-register the modalities using \cite{SPM12} and the
 highest interpolation order. In the same step we also resliced the volumes
