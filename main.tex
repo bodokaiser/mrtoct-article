@@ -1,35 +1,38 @@
-\documentclass[
-  a4paper,
-  abstracton,
-  twocolumn,
-  emulatestandardclasses
-]{scrartcl}
+  \documentclass[
+    a4paper,
+    abstracton,
+    twocolumn,
+    emulatestandardclasses
+  ]{scrartcl}
 
-\usepackage[english]{babel}
-\usepackage{xcolor}
-\usepackage{authblk}
-\usepackage{amsthm}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{physics}
-\usepackage{csquotes}
-\usepackage{paralist}
-\usepackage[
-  backend=biber,
-  sorting=none
-]{biblatex}
-\usepackage{graphicx}
-\usepackage[hidelinks]{hyperref}
-\usepackage{cleveref}
-\usepackage[binary-units]{siunitx}
-\usepackage[margin=14pt]{caption}
-\usepackage{booktabs}
-\usepackage{pgfplots}
-\usepackage{adjustbox}
-\usepackage[acronym]{glossaries}
+  \usepackage[english]{babel}
+  \usepackage{xcolor}
+  \usepackage{authblk}
+  \usepackage{amsthm}
+  \usepackage{amsmath}
+  \usepackage{amssymb}
+  \usepackage{physics}
+  \usepackage{csquotes}
+  \usepackage{paralist}
+  \usepackage[
+    backend=biber,
+    sorting=none
+  ]{biblatex}
+  \usepackage{graphicx}
+  \usepackage[hidelinks]{hyperref}
+  \usepackage{cleveref}
+  \usepackage[binary-units]{siunitx}
+  \usepackage[
+    margin=10pt,
+    labelfont=bf
+  ]{caption}
+  \usepackage{booktabs}
+  \usepackage{pgfplots}
+  \usepackage{adjustbox}
+  \usepackage[acronym]{glossaries}
 
-\title{MRI to CT Translation with GANs}
-\author[1]{Bodo Kaiser}
+  \title{MRI to CT Translation with GANs}
+  \author[1]{Bodo Kaiser}
 \author[2]{Shadi Albarqouni}
 \affil[1]{\textit{bodo.kaiser@physik.uni-muenchen.de}}
 \affil[2]{\textit{shadi.albarqouni@tum.de}}
@@ -37,9 +40,20 @@
 \pgfplotsset{compat=newest}
 \addbibresource{literature.bib}
 
+\newacronym{ct}{CT}{X-ray computed tomography}
+\newacronym{mri}{MRI}{magnetic resonance imaging}
+\newacronym{pd}{PD}{proton density}
+\newacronym{t1}{T1}{spin-lattice relaxation time}
+\newacronym{t2}{T2}{spin-spin relaxation time}
+\newacronym{mp}{MP}{magnetization-prepared}
+\newacronym{itk}{ITK}{Insight Segmentation and Registration Toolkit}
+\newacronym{rage}{RAGE}{RF pulse and rapid gradient echo}
 \newacronym{mhd}{MHD}{MetaImage Header}
+\newacronym{pet}{PET}{positron emission tomography}
 \newacronym{rire}{RIRE}{Retrospective Image Registration Evaluation}
 \newacronym{nifti}{NIfTI}{Neuroimaging Informatics Technology Institute}
+\newacronym{oasis}{OASIS}{Open Access Series of Imaging Studies}
+\newacronym{adni}{ADNI}{Alzheimer's Disease Neuroimaging Initiative}
 
 \begin{document}
 
