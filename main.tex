@@ -1,0 +1,58 @@
+\documentclass[
+  a4paper,
+  abstracton,
+  twocolumn,
+  emulatestandardclasses
+]{scrartcl}
+
+\usepackage[english]{babel}
+\usepackage{xcolor}
+\usepackage{authblk}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics}
+\usepackage{csquotes}
+\usepackage{paralist}
+\usepackage[
+  backend=biber,
+  sorting=none
+]{biblatex}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+\usepackage[binary-units]{siunitx}
+\usepackage[margin=14pt]{caption}
+\usepackage{booktabs}
+\usepackage{pgfplots}
+\usepackage{adjustbox}
+
+\title{MRI to CT Translation with GANs}
+\author[1]{Bodo Kaiser}
+\author[2]{Shadi Albarqouni}
+\affil[1]{\textit{bodo.kaiser@physik.uni-muenchen.de}}
+\affil[2]{\textit{shadi.albarqouni@tum.de}}
+
+\pgfplotsset{compat=newest}
+\addbibresource{literature.bib}
+
+\begin{document}
+
+\makeatletter
+\twocolumn[
+	\begin{@twocolumnfalse} 
+		\maketitle
+		\input{abstract}
+		\vspace{1em}
+	\end{@twocolumnfalse}
+]
+\makeatother
+
+\input{intro}
+\input{related}
+\input{method}
+\input{result}
+
+\printbibliography{}
+
+\end{document}

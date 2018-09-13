@@ -1,0 +1,43 @@
+\section{Related Work}
+
+Since the early days of CTs health manufacturer were attempted to reduce
+radiation exposure in CT scans by using i.e. more sensible detection
+electronics and more sophisticated scanning sequences. Through the growing
+availability of computing power we also find evermore computer vision
+techniques being utilized, for example to enhance the image quality of
+low-dose CTs \cite{Xu12}. Altough these efforts have lead to an
+impressive and steady evolution of CT apparatus, they still require the
+patient to be irradiated.
+
+First approaches which dispense with radiation exposure, relay on the
+atlas based transformations applied to MR to predict CT \cite{Hofmann08}.
+Further improvements included i.e. random forests \cite{Andreasen13}.
+It has been shown that CT prediction can in fact replace CT for treatment
+planning \cite{Andreasen2017}.
+
+In computer science we have seen an incredible progress with
+deep learning techniques in a variety of areas including natural language
+processing and computer vision \cite{LeCun15}. Recent efforts with generative
+adversarial networks (GANs) \cite{Goodfellow14} seem to be a promising
+path towards the challenge of finding appropriate target functions to optimize
+through the use of game theory. Successful applications in computer vision
+in which GANs proved significant improvements over the former state of art
+include the task of image to image translation \cite{Isola16} but also the
+generalization of three dimensional structures inside the so called latent
+space \cite{ZXFT16}.
+
+This in mind the medical computer vision community rapidly adapted
+GANs for their own specific tasks which in comparison to computer
+vision typical involve volumetric single channel images with high bit depth.
+Bearing the challenge of CT from MR prediction the expectations towards GANs
+have been met showing overall better results compared to the previous
+approach \cite{Nie16}. Additionally the full potential of GANs have not
+been exhausted yet as it also has been shown that GANs are capable of
+being trained with unregistered modalities \cite{Wolterink17}.
+
+Beside the enourmous breakthroughs made in medical computer vision we still
+see a shortage in a reproducable comparison of recent methods with publicly
+available data. Not to mention the open questions with regard to best
+practices in choosing good GAN model parameters for the task of CT prediction
+which we hope to address in the subsequent sections.
+
