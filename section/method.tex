@@ -76,7 +76,8 @@ reverted back to the \gls{itk} library, see Ref.~\cite{Yaniv2018}.
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{figure/registration.pdf}
-  \caption{Multi-modal image coregistration using mutual information.
+  \caption{Multi-modal image coregistration using maximum mutual information
+    optimizer.
 	}\label{fig:registration}
 \end{figure}
 Finally we used a binary fill holes algorithm from SciPy~\cite{SciPy} to
@@ -97,11 +98,34 @@ segmentation~\cite{Badrinarayanan15}. Further our implementation of pix2pix
 uses u-net as generator network, hence we are able to evaluate the impact
 of the adversarial min-max approach.
 
-Eventually we want to evaluate a new network and training approach novel to
-medical computer vision~\cite{Karras17}.
+\subsubsection{u-net}
 
-\subsubsection{U-Net}
-
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figure/unet-arch.pdf}
+  \caption{The u-net generator architecture.
+	}\label{fig:unet:arch}
+\end{figure}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{lcccc}
+    \toprule
+    Block & Kernel & Strides & Padding & Initializer \\
+    \midrule
+    Encode & \num{4} & \num{2} & Same & Xavier \\
+    Decode & \num{4} & \num{2} & Same & Xavier \\
+    Final  & \num{3} & \num{2} & Same & Xavier \\
+    \bottomrule
+  \end{tabular}
+  \caption{Convolution parameters used in the u-net blocks.
+  }\label{tab:unet:conv}
+\end{table}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figure/unet-block.pdf}
+  \caption{The u-net encoder, decoder and final block.
+	}\label{fig:unet:block}
+\end{figure}
 
 \subsubsection{Pix2Pix}
 
