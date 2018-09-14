@@ -1,37 +1,28 @@
 \section{Method}
 
-In the consecutive parts we discuss the parameters relevant for the conducted
-experiments. This includes decisions we made for the setup as a whole
-(dataset, pre processing) but also detail decisions regarding for example
-the implementation of a specific model. The source code based on the
-Tensorflow framework~\cite{tensorflow15} will be made available through
-GitHub.
+\subsection{Dataset}
 
-\subsection{Dataset and preprocessing}
-
-Though there are several \gls{mri} and \gls{ct} datasets available, for
-instance \gls{oasis}~\cite{OASIS} or \gls{adni}~\cite{ADNI}, public datasets
-in which both modalities are present for the same subject are to date rare. To
-our knowledge there are only two public databases available that disclose
-\gls{mri} and \gls{ct} volumes for the same subjects, namely the \gls{rire}
-project~\cite{RIRE} and the Cancer Imaging Archive~\cite{CIA}. For the present
-work we limited ourselves to the imaging data of the \gls{rire} project, as we
-found that it involved a simpler preprocessing pipeline.
-
-The \gls{rire} dataset contains multi-modality imaging data of about \num{19}
-patients. In \Cref{tab:rire} we present the total number of modalities
-available. Beside of the \gls{ct} modalities the dataset also provides
-\gls{pet} volumes for some subjects. Beside the common \gls{t1} and \gls{t2}
-weightes sequences, there are also \gls{pd} and \gls{mp} \gls{rage} sequences
-used to obtain the different \gls{mri} volumes. Furtheremore some modalities
-were also available in a rectified version, which we, however, did not use.
+There are several \gls{mri} and \gls{ct} datasets available, for
+instance, \gls{oasis}~\cite{OASIS} or \gls{adni}~\cite{ADNI}. Unfortunately
+public datasets in which both modalities are obtainable for the same subject
+are, to date, rare. To our knowledge only the \gls{rire} project~\cite{RIRE}
+and the Cancer Imaging Archive~\cite{CIA} provide \gls{mri} and \gls{ct}
+volumes for some subjects. For the present work we limited ourselves to the
+data from the \gls{rire} project, as the volumetric data was available in the
+same format.
 \begin{table}[h]
   \centering
   \begin{tabular}{*{6}{c}}
     \toprule
-             & \multicolumn{4}{c}{\gls{mri}} & \\
-    \cmidrule{2-5}
-    \gls{ct} & \gls{pd} & \gls{t1} & \gls{t2} & \gls{mp} \gls{rage} & \gls{pet} \\
+    & \multicolumn{4}{c}{\acrshort{mri}}
+		& \\
+   	\cmidrule{2-5}
+    \acrshort{ct} &
+		\acrshort{pd} &
+		\acrshort{t1} &
+		\acrshort{t2} &
+		\acrshort{mp} \acrshort{rage} &
+		\acrshort{pet} \\
     \midrule
     \num{17} & \num{14} & \num{19} & \num{18} & \num{9} & \num{8} \\
              & \num{12} & \num{17} & \num{16} & \num{9} & \num{6} \\
@@ -42,35 +33,56 @@ were also available in a rectified version, which we, however, did not use.
     subjects with available \gls{ct} data.
   }\label{tab:rire}
 \end{table}
-For the second row in \Cref{tab:rire} we only account for subjects that have
-a \gls{ct} volume to count. For the subsequent steps we decided to select the
-\gls{t1} weighted \gls{mri} as it had the highest subject count.
+In \Cref{tab:rire} we list the aggregated modality count of the \gls{rire}
+dataset (first row). As we use the \gls{ct} as target space, we created a
+second modality count on the subjects with \gls{ct} modality (second row).
+Beside of \gls{ct} one can also obtain \gls{pet} images for some subjects.
+Next to the common \gls{t1} and \gls{t2} weighted \gls{mri}, some subjects of
+the \gls{rire} dataset also offer \gls{pd} and \gls{mp} \gls{rage} weighted
+\gls{mri}s. Some \gls{mri}s can be obtained in a rectified version, which we
+did not use. We used the \gls{t1} weighted \gls{mri} together with the
+\gls{ct} as input and target data as these give us the highest subject count.
+However, it would be an interesting experiment to supply different \gls{mri}s
+as multi-channel input.
+
+\subsection{Preprocessing}
 
 The modality data for each subject can be downloaded from the website of the
-\gls{rire} project, see Ref.~\cite{RIRE}. The first preprocessing step,
-depicted in \Cref{fig:conversion}, involves the extraction, decompression and
+\gls{rire} project, see Ref.~\cite{RIRE}. In \Cref{fig:conversion} we depicted
+the first preprocessing step, that involves the extraction, decompression and
 conversion of the downloaded data. After extraction and decompression the
-volumetric data presents itself as \gls{mhd}. We convert the \gls{mhd} files
+volumetric data presents itself as \gls{mhd}. We converted the \gls{mhd} files
 to the self-contained \gls{nifti} format through the Python front-end of the
-\gls{itk} library. 
+\gls{itk} library.
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{figure/conversion.pdf}
-  \caption{Dataset conversion from \gls{mhd} to \gls{nifti} format.
+  \caption{Image extraction and conversion from \gls{mhd} to \gls{nifti}
+		format.
 	}\label{fig:conversion}
 \end{figure}
-We were able to co-register the modalities using~\cite{SPM12} and the
-highest interpolation order. In the same step we also resliced the volumes
-to have a homogenous voxel size as the RIRE dataset has only a low resolution
-in the sagittal plane.
-
-
-Finally we used~\cite{Nibabel} to load the aligned volumes and convert them
-into Tensorflow's tfrecord format and split them into a validation set of
-4 and a training set of 13 patients. Inside the tensorflow input pipeline
-we normalized the value range of each volume to $[0,1]$. For two dimensional
-models we padded the horizontal slices to $384\times384$. For three
-dimensional models we used $260\times340\times360$ (Depth x Height x Width).
+\Cref{fig:registration} illustrates the coregistration procedure as part of
+the image preprocessing. The coregistration yields a rigid transformation that
+aligns the moving volume with the fixed volume. In our case it makes sense to
+use the \gls{ct} volume as the fixed volume because the \gls{ct} are in
+general better centered. Given a rigid transformation, a linear interpolator
+returns a translated volume from the sample points of the initial \gls{mri}.
+The mutual information between the moved \gls{mri} and the \gls{ct} is then
+used to optimize the rigid transformation. The procedure is executed
+iteratively and stopped when the maximum iterations steps are reached or
+the convergence parameter is met. As the implementation of the interpolator
+and transformation optimizer is not a trivial undergoing, therefore we
+reverted back to the \gls{itk} library, see Ref.~\cite{Yaniv2018}.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figure/registration.pdf}
+  \caption{Multi-modal image coregistration using mutual information.
+	}\label{fig:registration}
+\end{figure}
+Finally we used a binary fill holes algorithm from SciPy~\cite{SciPy} to
+remove the \gls{ct} table present in some \gls{ct} volumes as well as
+background noise.\footnote{The complete preprocessing described so far is
+available at \url{https://github/bodokaiser/mrtoct-scripts}.}
 
 \subsection{Network}
 
