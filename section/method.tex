@@ -102,9 +102,9 @@ of the adversarial min-max approach.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{figure/unet-arch.pdf}
+  \includegraphics[width=\linewidth]{figure/unet-gen.pdf}
   \caption{The u-net generator architecture.
-	}\label{fig:unet:arch}
+	}\label{fig:unet:gen}
 \end{figure}
 \begin{table}[h]
   \centering
@@ -122,14 +122,47 @@ of the adversarial min-max approach.
 \end{table}
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{figure/unet-block.pdf}
-  \caption{The u-net encoder, decoder and final block.
-	}\label{fig:unet:block}
+  \includegraphics[width=\linewidth]{figure/unet-blocks.pdf}
+  \caption{The u-net encoder, decoder and final convolution block.
+	}\label{fig:unet:blocks}
 \end{figure}
 
-\subsubsection{Pix2Pix}
+\subsubsection{pixtopix}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figure/pixtopix-disc.pdf}
+  \caption{The pixtopix discriminator architecture.
+	}\label{fig:pixtopix:disc}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figure/pixtopix-blocks.pdf}
+  \caption{The pixtopix discriminator blocks.
+	}\label{fig:pixtopix:blocks}
+\end{figure}
 
 \subsubsection{3D Synthesis}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figure/synthesis-gen.pdf}
+  \caption{The 3D synthesis generator architecture.
+	}\label{fig:synthesis:gen}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figure/synthesis-disc.pdf}
+  \caption{The 3D synthesis discriminator architecture.
+	}\label{fig:synthesis:disc}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figure/synthesis-blocks.pdf}
+  \caption{The 3D synthesis generator and discriminator dense and convolution
+    blocks.
+	}\label{fig:synthesis:blocks}
+\end{figure}
 
 \subsection{Losses}
 
