@@ -62,7 +62,7 @@ to the self-contained \gls{nifti} format through the Python front-end of the
 \gls{itk} library.
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{figure/conversion.pdf}
+  \includegraphics[page=1,width=\linewidth]{figure/diagrams.pdf}
   \caption{Image extraction and conversion from \gls{mhd} to \gls{nifti}
 		format.
 	}\label{fig:conversion}
@@ -81,7 +81,7 @@ and transformation optimizer is not a trivial undergoing, therefore we
 reverted back to the \gls{itk} library, see Ref.~\cite{Yaniv2018}.
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{figure/registration.pdf}
+  \includegraphics[page=2,width=\linewidth]{figure/diagrams.pdf}
   \caption{Multi-modal image coregistration using maximum mutual information
     optimizer.
 	}\label{fig:registration}
@@ -121,7 +121,7 @@ combine the capture of context and precise localization through interconnected
 layers.
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{figure/unet-gen.pdf}
+  \includegraphics[page=3,width=\linewidth]{figure/diagrams.pdf}
   \caption{The u-net generator architecture.
   }\label{fig:unet:gen}
 \end{figure}
@@ -137,7 +137,7 @@ features with increasing coarse resolution, while the decoders synthesize the
 target image from the previous stage and the feature map of same resolution.
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{figure/unet-blocks.pdf}
+  \includegraphics[page=4,width=\linewidth]{figure/diagrams.pdf}
   \caption{The u-net encoder, decoder and final convolution block.
 	}\label{fig:unet:blocks}
 \end{figure}
@@ -181,7 +181,7 @@ has also already been applied successfully to the task of \gls{mri} to
 \gls{ct} translation~\cite{Wolterink17}.
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{figure/pixtopix-disc.pdf}
+  \includegraphics[page=5,width=\linewidth]{figure/diagrams.pdf}
   \caption{The pixtopix discriminator architecture.
 	}\label{fig:pixtopix:disc}
 \end{figure}
@@ -193,7 +193,7 @@ passed through five convolutional layer that finally output a score map of
 shape $1\times24\times512$.
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{figure/pixtopix-blocks.pdf}
+  \includegraphics[page=6,width=\linewidth]{figure/diagrams.pdf}
   \caption{The pixtopix discriminator blocks.
 	}\label{fig:pixtopix:blocks}
 \end{figure}
@@ -229,13 +229,13 @@ complexity in the pre- and postprocessing, as we need to extract the patches
 first from the volume and then need to recombine them at a later stage.
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{figure/synthesis-gen.pdf}
+  \includegraphics[page=7,width=\linewidth]{figure/diagrams.pdf}
   \caption{The contxt-aware 3D synthesis generator architecture.
   }\label{fig:synthesis:gen}
 \end{figure}
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{figure/synthesis-disc.pdf}
+  \includegraphics[page=8,width=\linewidth]{figure/diagrams.pdf}
   \caption{The context-aware 3D synthesis discriminator architecture.
 	}\label{fig:synthesis:disc}
 \end{figure}
@@ -249,7 +249,7 @@ $8\times8\times8\times1$. In comparison to pixtopix it does not consider the
 input \gls{mri}.
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{figure/synthesis-blocks.pdf}
+  \includegraphics[page=9,width=\linewidth]{figure/diagrams.pdf}
   \caption{The context-aware 3D synthesis generator and discriminator dense
     and convolution blocks.
 	}\label{fig:synthesis:blocks}
@@ -290,7 +290,7 @@ the padding and the stride parameter in order to get the dimension reduction
 to $16\times16\times\16$.
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{figure/synthesis-refine.pdf}
+  \includegraphics[page=10,width=\linewidth]{figure/diagrams.pdf}
   \caption{The auto-context model used in ontext-aware 3D synthesis for
     image refinement.
 	}\label{fig:synthesis:refine}
