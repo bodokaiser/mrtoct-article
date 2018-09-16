@@ -80,32 +80,69 @@ reverted back to the \gls{itk} library, see Ref.~\cite{Yaniv2018}.
     optimizer.
 	}\label{fig:registration}
 \end{figure}
-Finally we used a binary fill holes algorithm from SciPy~\cite{SciPy} to
-remove the \gls{ct} table present in some \gls{ct} volumes as well as
-background noise.\footnote{The complete preprocessing described so far is
-available at \url{https://github/bodokaiser/mrtoct-scripts}.}
+Following the coregistration, we used the binary fill holes algorithm from
+SciPy~\cite{SciPy} to remove the \gls{ct} table present in some \gls{ct}
+volumes as well as well as background noise.\footnote{The complete
+preprocessing described so far is available at
+\url{https://github/bodokaiser/mrtoct-scripts}.} Finally we converted the
+preprocessed pairs of \gls{mri} and \gls{ct} volumes to the tfrecord format
+in order to easily read the data into Tensorflow~\cite{Tensorflow15}. As part
+of the data pipeline implemented with Tensorflow we do a pad or crop to either
+$384\times384$ for transverse 2D slices or $32\times32\times32$ for \gls{mri}
+respective $16\times16\times16$ for \gls{ct} for 3D patches. The target shape
+for the 2D slices was choosen to be compatible with the convolution parameters
+and the largest resolution of all volumes. Furtheremore we applied a
+min-max-normalization in order to operate on a value range of $[0,1]$.
 
-\subsection{Network}
+\subsection{Models}
 
-As generative adversarial networks we decided to use pix2pix~\cite{Isola16}
-as it has already shown great results in the task of color image to image
-translation and context-aware 3d synthesis~\cite{Nie16} which uses a simpler
-generator but accounts for 3d structures.
-
-As convolutional encoder-decoder network we chose u-net~\cite{Ronneberger15}
-as it was able to compete with much larger models in the task of semantic
-segmentation~\cite{Badrinarayanan15}. Further our implementation of pix2pix
-uses u-net as generator network, hence we are able to evaluate the impact
-of the adversarial min-max approach.
+We implemented three different neural network models for the \gls{mri} to
+\gls{ct} synthesis task. The first and most simple model is based on the
+u-net model~\cite{Ronneberger15} and uses standard metric error metric,
+i.e.\ \gls{mae} and \gls{mse}. The second model is based on
+pix2pix~\cite{Isola16}, which already has proven great success in the task
+of image translation. It uses the first u-net based model as generator in
+addition to a discriminator model to calculate the adversarial loss. As third
+model we implemented the context-aware 3D synthesis GAN from Nie~\cite{Nie16}.
+In comparison to the other two models, which operate on the transverse 2D
+slices of the brain, it is applied to 3D patches.
 
 \subsubsection{u-net}
 
+The original u-net model~\cite{Ronneberger15} was developed for the
+segmentation of biomedical images. The key idea of the architecture is to
+combine the capture of context and precise localization through interconnected
+layers.
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{figure/unet-gen.pdf}
   \caption{The u-net generator architecture.
-	}\label{fig:unet:gen}
+  }\label{fig:unet:gen}
 \end{figure}
+In \Cref{fig:unet:gen} the u-net architecture is illustrated. The
+input \gls{mri} slice is of shape $384\times384\times1$, wherein the last
+dimension corresponds to the number of channels. In case one would like to
+input different weighted \gls{mri}s, it would be possible to concat these into
+the last dimension as long as they are properly coregistered.
+We can see that there are two paths of data flow: for one the image is passed
+through a seqeunce of encoders and decoders, then again data can flow from
+one encoder stage directly to the symmetric decoder stage. The encoder decode
+features with increasing coarse resolution, while the decoders synthesize the
+target image from the previous stage and the feature map of same resolution.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figure/unet-blocks.pdf}
+  \caption{The u-net encoder, decoder and final convolution block.
+	}\label{fig:unet:blocks}
+\end{figure}
+In \Cref{fig:unet:blocks} we present the exact layer composition of the
+encoder, decoder and final block of the u-net architecture. In comparison to
+the original u-net we reduced the convolution layers per block to one and
+replaced the max-pooling in the decoders with deconvolutions. Furthermore
+we used Leaky ReLUs in the encoders. These changes are mainly inspired by the
+u-net like generator used in pixtopix. The first encoder block uses no batch
+normalization and dropout is only used in Decoder \num{4} and Decoder \num{5}
+as noted in \Cref{fig:unet:gen}.
 \begin{table}[h]
   \centering
   \begin{tabular}{lcccc}
@@ -120,74 +157,141 @@ of the adversarial min-max approach.
   \caption{Convolution parameters used in the u-net blocks.
   }\label{tab:unet:conv}
 \end{table}
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\linewidth]{figure/unet-blocks.pdf}
-  \caption{The u-net encoder, decoder and final convolution block.
-	}\label{fig:unet:blocks}
-\end{figure}
+In \Cref{tab:unet:conv} the convolution parameters for the convolution and
+deconvolution layers in the u-net blocks are shown. The kernel paremeter
+specifies the size of the convolution kernel, the stride parameter describes
+the spacing in between applied convolutions. The padding algorithm was chosen
+to keep output and input size the same. Weight initialization was performed
+according using Xavier, see Ref.~\cite{Xavier2010}.
 
 \subsubsection{pixtopix}
 
+The pixtopix model uses the previously described u-net as generator in
+addition to a discriminator to supply an adversarial score, see
+Ref.~\cite{Isola16}. It has proven great success as general purpose solution
+for translation experiments with color images. Recently the pixtopix was
+extended to support training on unpaired data~\cite{Zhu2017}. This approach
+has also already been applied successfully to the task of \gls{mri} to
+\gls{ct} translation~\cite{Wolterink17}.
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{figure/pixtopix-disc.pdf}
   \caption{The pixtopix discriminator architecture.
 	}\label{fig:pixtopix:disc}
 \end{figure}
+In \Cref{fig:pixtopix:disc} the discriminator architecture is depicted. It
+first concats the input \gls{mri} with either the target \gls{ct} or the
+output \gls{ct}, depending on if we want to calculate a real or fake score,
+in the channel dimension. The image of shape $384\times384\times2$ is then
+passed through five convolutional layer that finally output a score map of
+shape $1\times24\times512$.
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{figure/pixtopix-blocks.pdf}
   \caption{The pixtopix discriminator blocks.
 	}\label{fig:pixtopix:blocks}
 \end{figure}
+In \Cref{fig:pixtopix:blocks} we see that the convolutional blocks comprise
+a convolutional layer and a Leaky ReLU non-linearity, wherein the final block
+uses a Sigmoid activation instead of Leaky ReLUs.
+\begin{table}[h]
+  \centering
+  \begin{tabular}{lcccc}
+    \toprule
+    Block & Kernel & Strides & Padding & Initializer \\
+    \midrule
+    Conv & \num{4} & \num{2} & Same & Xavier \\
+    Final  & \num{4} & \num{1} & Same & Xavier \\
+    \bottomrule
+  \end{tabular}
+  \caption{Convolution parameters used in the pixtopix discriminator blocks.
+  }\label{tab:pixtopix:conv}
+\end{table}
+\Cref{tab:pixtopix:conv} shows the exact configuration of the convolutional
+layers in the pixtopix discriminator blocks.
 
-\subsubsection{3D Synthesis}
+\subsubsection{Context-aware 3D synthesis}
 
+The last model uses 3D patches of shape $32\times32\times32$ from the
+\gls{mri} to synthesize \gls{ct} patches of shape $16\times16\times16$. By
+using a larger volume for the input the network is able to perform
+context-aware synthesis. Furthermore the patch-based data approach allows the
+support of different sized brain volumes or even only specific subregions ---
+as long as the voxel size correspond to the same world sizes --- which is
+useful for practical applications. Unfortunately this approach puts a lot
+complexity in the pre- and postprocessing, as we need to extract the patches
+first from the volume and then need to recombine them at a later stage.
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{figure/synthesis-gen.pdf}
-  \caption{The 3D synthesis generator architecture.
-	}\label{fig:synthesis:gen}
+  \caption{The contxt-aware 3D synthesis generator architecture.
+  }\label{fig:synthesis:gen}
 \end{figure}
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{figure/synthesis-disc.pdf}
-  \caption{The 3D synthesis discriminator architecture.
+  \caption{The context-aware 3D synthesis discriminator architecture.
 	}\label{fig:synthesis:disc}
 \end{figure}
+In \Cref{fig:synthesis:gen} and \Cref{fig:synthesis:disc} we illustrated the
+generator and discriminator architecture of the context-aware 3D synthesis
+model. The generator iteratively convolves the input \gls{mri} patch to the
+target \gls{ct} patch. In comparison to the u-net based generators there
+are no interconnected layers. The discriminator takes a similar approach and
+reduces the output or target \gls{ct} patch to a score map of shape
+$8\times8\times8\times1$. In comparison to pixtopix it does not consider the
+input \gls{mri}.
 \begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{figure/synthesis-blocks.pdf}
-  \caption{The 3D synthesis generator and discriminator dense and convolution
-    blocks.
+  \caption{The context-aware 3D synthesis generator and discriminator dense
+    and convolution blocks.
 	}\label{fig:synthesis:blocks}
 \end{figure}
-
-\subsection{Losses}
-
-\subsubsection{Distance Losses}
-
-As norm losses we refer to the mean absolute error ($L1$ loss) and the
-mean squared error ($L2$ loss).
-
-\subsubsection{Gradient Losses}
-
-The gradient (difference) loss is used in the framework of context-aware
-3d synthesis~\cite{Nie16} in addition to the norm loss.
-
-\subsubsection{Signal Losses}
-
-From signal processing PSNR,SSE
-
-\subsubsection{Adversarial Loss}
-
-Least-squared adversarial loss, standard adversarial loss. BEGAN loss?
-
-
-\subsection{Augmentation}
-
-\subsubsection{Random Crop}
-\subsubsection{Rotation}
-\subsubsection{Contast Adjustment}
-
+In \Cref{fig:synthesis:blocks} we see the internal structure of the
+convolution blocks in both the generator and the discriminator. In comparison
+to pixtopix it uses normal ReLUs and max pooling over deconvolution.
+\begin{table}[h]
+  \centering
+  \begin{tabular}{lccc}
+    \toprule
+    Block         & Kernel  & Padding & Filters \\
+    \midrule
+    Gen. Conv 1   & \num{9} & Valid   & 32      \\
+    Gen. Conv 2   & \num{3} & Same    & 32      \\
+    Gen. Conv 3   & \num{3} & Valid   & 32      \\
+    Gen. Conv 4   & \num{3} & Valid   & 32      \\
+    Gen. Conv 5   & \num{9} & Same    & 64      \\
+    Gen. Conv 6   & \num{3} & Valid   & 64      \\
+    Gen. Conv 7   & \num{3} & Valid   & 32      \\
+    Gen. Conv 8   & \num{7} & Valid   & 32      \\
+    Gen. Conv 9   & \num{3} & Valid   & 32      \\
+    Gen. Conv 10  & \num{3} & Valid   & 1       \\
+    Disc. Conv 1  & \num{5} & Same    & 32      \\
+    Disc. Conv 2  & \num{5} & Same    & 64      \\
+    Disc. Conv 3  & \num{5} & Same    & 128     \\
+    Disc. Conv 4  & \num{5} & Same    & 256     \\
+    \bottomrule
+  \end{tabular}
+  \caption{Convolution parameters used in the context-aware 3D synthesis
+    blocks. Strides default to \num{1}. Weight initialization was performed
+    through Xavier.
+  }\label{tab:synthesis:conv}
+\end{table}
+\Cref{tab:synthesis:blocks} discloses the convolution parameters used. Though
+the kernel size was given in Ref.~\cite{Nie16}, we had to experiment with
+the padding and the stride parameter in order to get the dimension reduction
+to $16\times16\times\16$.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figure/synthesis-refine.pdf}
+  \caption{The auto-context model used in ontext-aware 3D synthesis for
+    image refinement.
+	}\label{fig:synthesis:refine}
+\end{figure}
+We already noted that the context-aware 3D synthesis generator lacks
+interconnected layers in comparison to u-net. Instead, it uses the
+auto-context model first introduced in Ref.~\cite{Tu2010}. The concept is
+illustrated in \Cref{fig:synthesis:refine}. The idea is to iteratively train
+networks and to pass the previous results with the initial \gls{mri} to the
+preceeding stage.
