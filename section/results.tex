@@ -1,0 +1,59 @@
+\section{Experiments}
+
+We had difficulties with the implementation of the patch aggregation required
+for the implementation of the context-aware 3D synthesis. Though patch
+aggregation worked in general, it occupied more time then the actual training.
+Unfortunatly we were not able to find a workaround or to allocate more
+computation quota, henceforth we did not overcome more then one iteration of
+the auto-context model and did not perform more experiments with this model
+as we could not guarantee a fair comparison. However, we encourage everyone
+to test our implementation themselves. Consequently we only conducted
+experiments with the u-net generator and the pixtopix \gls{gan}.
+
+\subsection{Distance Losses}
+
+One experimental parameter of interest was the performance impact of the
+different loss functions. We first optimized the loss function used when
+only training the u-net. Let $X,Y\in[0,1]^N$ be output and target vectors,
+then we define the \gls{mae} to be
+\begin{equation}
+  \mae\left(X,Y\right)
+  =
+  \frac{1}{N}\sum_{i=1}^N
+  \abs{X_i-Y_i}
+  \label{eq:mae}.
+\end{equation}
+The \gls{mse} we define via
+\begin{equation}
+  \mse\left(X,Y\right)
+  =
+  \frac{1}{N}\sum_{i=1}^N
+  \left(X_i-Y_j\right)^2
+  \label{eq:mse}.
+\end{equation}
+Finally the \gls{gdl} disclosed in Ref.~\cite{Nie16} is defined as
+\begin{equation}
+  \gdl\left(X,Y\right)
+  =
+  \mse\left(\grad X,\grad Y\right)
+  \label{eq:gdl},
+\end{equation}
+wherein $\grad$ is the spatial gradient. We approximate the $i$th element
+of the spatial gradient through
+\begin{equation}
+  \grad X_i
+  \approx
+  \begin{cases}
+    X_i-X_{i+1}\qc\text{if }, $1<i<N$\\
+    0\qc\text{otherwise}
+  \end{cases}
+  \label{eq:grad}.
+\end{equation}
+
+\subsection{Adversarial Losses}
+
+% LSGAN, MinMaxAdvLoss
+
+\subsection{Gradient Boost}
+
+% Boost brain matter tissue
