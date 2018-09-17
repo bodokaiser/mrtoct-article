@@ -135,12 +135,6 @@ through a seqeunce of encoders and decoders, then again data can flow from
 one encoder stage directly to the symmetric decoder stage. The encoder decode
 features with increasing coarse resolution, while the decoders synthesize the
 target image from the previous stage and the feature map of same resolution.
-\begin{figure}[h]
-  \centering
-  \includegraphics[page=4,width=\linewidth]{figure/diagrams.pdf}
-  \caption{The u-net encoder, decoder and final convolution block.
-	}\label{fig:unet:blocks}
-\end{figure}
 In \Cref{fig:unet:blocks} we present the exact layer composition of the
 encoder, decoder and final block of the u-net architecture. In comparison to
 the original u-net we reduced the convolution layers per block to one and
@@ -181,7 +175,7 @@ has also already been applied successfully to the task of \gls{mri} to
 \gls{ct} translation~\cite{Wolterink17}.
 \begin{figure}[h]
   \centering
-  \includegraphics[page=5,width=\linewidth]{figure/diagrams.pdf}
+  \includegraphics[page=4,width=\linewidth]{figure/diagrams.pdf}
   \caption{The pixtopix discriminator architecture.
 	}\label{fig:pixtopix:disc}
 \end{figure}
@@ -191,12 +185,6 @@ output \gls{ct}, depending on if we want to calculate a real or fake score,
 in the channel dimension. The image of shape $384\times384\times2$ is then
 passed through five convolutional layer that finally output a score map of
 shape $1\times24\times512$.
-\begin{figure}[h]
-  \centering
-  \includegraphics[page=6,width=\linewidth]{figure/diagrams.pdf}
-  \caption{The pixtopix discriminator blocks.
-	}\label{fig:pixtopix:blocks}
-\end{figure}
 In \Cref{fig:pixtopix:blocks} we see that the convolutional blocks comprise
 a convolutional layer and a Leaky ReLU non-linearity, wherein the final block
 uses a Sigmoid activation instead of Leaky ReLUs.
@@ -229,13 +217,13 @@ complexity in the pre- and postprocessing, as we need to extract the patches
 first from the volume and then need to recombine them at a later stage.
 \begin{figure}[h]
   \centering
-  \includegraphics[page=7,width=\linewidth]{figure/diagrams.pdf}
+  \includegraphics[page=5,width=\linewidth]{figure/diagrams.pdf}
   \caption{The contxt-aware 3D synthesis generator architecture.
   }\label{fig:synthesis:gen}
 \end{figure}
 \begin{figure}[h]
   \centering
-  \includegraphics[page=8,width=\linewidth]{figure/diagrams.pdf}
+  \includegraphics[page=6,width=\linewidth]{figure/diagrams.pdf}
   \caption{The context-aware 3D synthesis discriminator architecture.
 	}\label{fig:synthesis:disc}
 \end{figure}
@@ -247,13 +235,6 @@ are no interconnected layers. The discriminator takes a similar approach and
 reduces the output or target \gls{ct} patch to a score map of shape
 $8\times8\times8\times1$. In comparison to pixtopix it does not consider the
 input \gls{mri}.
-\begin{figure}[h]
-  \centering
-  \includegraphics[page=9,width=\linewidth]{figure/diagrams.pdf}
-  \caption{The context-aware 3D synthesis generator and discriminator dense
-    and convolution blocks.
-	}\label{fig:synthesis:blocks}
-\end{figure}
 In \Cref{fig:synthesis:blocks} we see the internal structure of the
 convolution blocks in both the generator and the discriminator. In comparison
 to pixtopix it uses normal ReLUs and max pooling over deconvolution.
@@ -290,7 +271,7 @@ the padding and the stride parameter in order to get the dimension reduction
 to $16\times16\times\16$.
 \begin{figure}[h]
   \centering
-  \includegraphics[page=10,width=\linewidth]{figure/diagrams.pdf}
+  \includegraphics[page=7,width=\linewidth]{figure/diagrams.pdf}
   \caption{The auto-context model used in ontext-aware 3D synthesis for
     image refinement.
 	}\label{fig:synthesis:refine}
