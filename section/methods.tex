@@ -145,25 +145,26 @@ normalization and dropout is only used in Decoder \num{4} and Decoder \num{5}
 as noted in \Cref{fig:unet:gen}.
 \begin{table}[h]
   \centering
-  \begin{tabular}{lrrrc}
+  \begin{tabular}{lrrc}
     \toprule
-    Type & Kernel & Filters & Strides & Output Shape \\
+    Type & Kernel & Strides & Output Shape \\
     \midrule
-    Input & & & & \num{384x384x1} \\ 
-    Convolution & \num{4} & \num{64}  & \num{2} & \num{192x192x64} \\
-    Convolution & \num{4} & \num{128}  & \num{2} & \num{96x96x128} \\
-    Convolution & \num{4} & \num{256}  & \num{2} & \num{48x48x256} \\
-    Convolution & \num{4} & \num{512}  & \num{2} & \num{24x24x512} \\
-    Convolution & \num{4} & \num{512}  & \num{2} & \num{12x12x512} \\
-    Deconvolution & \num{4} & \num{512}  & \num{2} & \num{24x24x512} \\
-    Deconvolution & \num{4} & \num{512}  & \num{2} & \num{48x48x512} \\
-    Deconvolution & \num{4} & \num{256}  & \num{2} & \num{96x96x256} \\
-    Deconvolution & \num{4} & \num{128}  & \num{2} & \num{192x192x128} \\
-    Deconvolution & \num{4} & \num{64}  & \num{2} & \num{384x384x64} \\
-    Deconvolution & \num{3} & \num{1}  & \num{1} & \num{384x384x1} \\
+    Input & & & \num{384x384x1} \\ 
+    Convolution & \num{4x4} & \num{2} & \num{192x192x64} \\
+    Convolution & \num{4x4} & \num{2} & \num{96x96x128} \\
+    Convolution & \num{4x4} & \num{2} & \num{48x48x256} \\
+    Convolution & \num{4x4} & \num{2} & \num{24x24x512} \\
+    Convolution & \num{4x4} & \num{2} & \num{12x12x512} \\
+    Deconvolution & \num{4x4} & \num{2} & \num{24x24x512} \\
+    Deconvolution & \num{4x4} & \num{2} & \num{48x48x512} \\
+    Deconvolution & \num{4x4} & \num{2} & \num{96x96x256} \\
+    Deconvolution & \num{4x4} & \num{2} & \num{192x192x128} \\
+    Deconvolution & \num{4x4} & \num{2} & \num{384x384x64} \\
+    Deconvolution & \num{3x3} & \num{1} & \num{384x384x1} \\
+    Output & & & \num{384x384x1} \\ 
     \bottomrule
   \end{tabular}
-  \caption{Convolution parameters used in the u-net blocks.
+  \caption{Network parameters used in the u-net.
   }\label{tab:unet:conv}
 \end{table}
 In \Cref{tab:unet:conv} the convolution parameters for the convolution and
@@ -199,15 +200,20 @@ a convolutional layer and a Leaky ReLU non-linearity, wherein the final block
 uses a Sigmoid activation instead of Leaky ReLUs.
 \begin{table}[h]
   \centering
-  \begin{tabular}{lcccc}
+  \begin{tabular}{lrrc}
     \toprule
-    Block & Kernel & Strides & Padding & Initializer \\
+    Type & Kernel & Strides & Output Shape \\
     \midrule
-    Conv & \num{4} & \num{2} & Same & Xavier \\
-    Final  & \num{4} & \num{1} & Same & Xavier \\
+    Input & & & \num{384x384x2} \\ 
+    Convolution & \num{4x4} & \num{2} & \num{192x192x64} \\
+    Convolution & \num{4x4} & \num{2} & \num{96x96x128} \\
+    Convolution & \num{4x4} & \num{2} & \num{48x48x256} \\
+    Convolution & \num{4x4} & \num{2} & \num{24x24x512} \\
+    Convolution & \num{4x4} & \num{1} & \num{1x24x512} \\
+    Output & & & \num{1x24x512} \\ 
     \bottomrule
   \end{tabular}
-  \caption{Convolution parameters used in the pixtopix discriminator blocks.
+  \caption{Network parameters used in the pixtopix discriminator.
   }\label{tab:pixtopix:conv}
 \end{table}
 \Cref{tab:pixtopix:conv} shows the exact configuration of the convolutional
@@ -249,30 +255,49 @@ convolution blocks in both the generator and the discriminator. In comparison
 to pixtopix it uses normal ReLUs and max pooling over deconvolution.
 \begin{table}[h]
   \centering
-  \begin{tabular}{lccc}
+  \begin{tabular}{lrrc}
     \toprule
-    Block         & Kernel  & Padding & Filters \\
+    Type & Kernel & Strides & Output Shape \\
     \midrule
-    Gen. Conv 1   & \num{9} & Valid   & 32      \\
-    Gen. Conv 2   & \num{3} & Same    & 32      \\
-    Gen. Conv 3   & \num{3} & Valid   & 32      \\
-    Gen. Conv 4   & \num{3} & Valid   & 32      \\
-    Gen. Conv 5   & \num{9} & Same    & 64      \\
-    Gen. Conv 6   & \num{3} & Valid   & 64      \\
-    Gen. Conv 7   & \num{3} & Valid   & 32      \\
-    Gen. Conv 8   & \num{7} & Valid   & 32      \\
-    Gen. Conv 9   & \num{3} & Valid   & 32      \\
-    Gen. Conv 10  & \num{3} & Valid   & 1       \\
-    Disc. Conv 1  & \num{5} & Same    & 32      \\
-    Disc. Conv 2  & \num{5} & Same    & 64      \\
-    Disc. Conv 3  & \num{5} & Same    & 128     \\
-    Disc. Conv 4  & \num{5} & Same    & 256     \\
+    Input & & & \num{32x32x32x1} \\ 
+    Convolution & \num{9x9x9} & \num{1} & \num{24x24x24x32} \\
+    Convolution & \num{3x3x3} & \num{1} & \num{24x24x24x32} \\
+    Convolution & \num{3x3x3} & \num{1} & \num{24x24x24x32} \\
+    Convolution & \num{3x3x3} & \num{1} & \num{24x24x24x32} \\
+    Convolution & \num{9x9x9} & \num{1} & \num{16x16x16x64} \\
+    Convolution & \num{3x3x3} & \num{1} & \num{16x16x16x64} \\
+    Convolution & \num{3x3x3} & \num{1} & \num{16x16x16x32} \\
+    Convolution & \num{7x7x7} & \num{1} & \num{16x16x16x32} \\
+    Convolution & \num{3x3x3} & \num{1} & \num{16x16x16x32} \\
+    Convolution & \num{3x3x3} & \num{1} & \num{16x16x16x1} \\
+    Output & & & \num{16x16x16x1} \\ 
     \bottomrule
   \end{tabular}
-  \caption{Convolution parameters used in the context-aware 3D synthesis
-    blocks. Strides default to \num{1}. Weight initialization was performed
-    through Xavier.
-  }\label{tab:synthesis:conv}
+  \caption{Network parameters used in the context-aware 3D synthesis generator.
+  }\label{tab:synthesis:gen}
+\end{table}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{lrrc}
+    \toprule
+    Type & Kernel & Strides & Output Shape \\
+    \midrule
+    Input & & & \num{16x16x16x1} \\ 
+    Convolution & \num{5x5x5} & \num{1} & \num{16x16x16x32} \\
+    Max Pooling & \num{3x3x3} & \num{1} & \num{14x14x14x32} \\
+    Convolution & \num{5x5x5} & \num{1} & \num{14x14x14x64} \\
+    Max Pooling & \num{3x3x3} & \num{1} & \num{12x12x12x64} \\
+    Convolution & \num{5x5x5} & \num{1} & \num{12x12x12x128} \\
+    Max Pooling & \num{3x3x3} & \num{1} & \num{10x10x10x128} \\
+    Dense & \num{512} & & \num{8x8x8x512} \\
+    Dense & \num{128} & & \num{8x8x8x128} \\
+    Dense & \num{1} & & \num{8x8x8x1} \\
+    Output & & & \num{8x8x8x1} \\ 
+    \bottomrule
+  \end{tabular}
+  \caption{Network parameters used in the context-aware 3D synthesis
+    discriminator.
+  }\label{tab:synthesis:disc}
 \end{table}
 \Cref{tab:synthesis:blocks} discloses the convolution parameters used. Though
 the kernel size was given in Ref.~\cite{Nie16}, we had to experiment with
