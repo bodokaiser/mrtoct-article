@@ -62,7 +62,7 @@ to the self-contained \gls{nifti} format through the Python front-end of the
 \gls{itk} library.
 \begin{figure}[h]
   \centering
-  \includegraphics[page=1,width=\linewidth]{figure/diagrams.pdf}
+  \includegraphics[page=1,width=.8\linewidth]{figure/diagrams.pdf}
   \caption{Image extraction and conversion from \gls{mhd} to \gls{nifti}
 		format.
 	}\label{fig:conversion}
@@ -81,7 +81,7 @@ and transformation optimizer is not a trivial undergoing, therefore we
 reverted back to the \gls{itk} library, see Ref.~\cite{Yaniv2018}.
 \begin{figure}[h]
   \centering
-  \includegraphics[page=2,width=\linewidth]{figure/diagrams.pdf}
+  \includegraphics[page=2,width=.8\linewidth]{figure/diagrams.pdf}
   \caption{Multi-modal image coregistration using maximum mutual information
     optimizer.
 	}\label{fig:registration}
@@ -121,7 +121,7 @@ combine the capture of context and precise localization through interconnected
 layers.
 \begin{figure}[h]
   \centering
-  \includegraphics[page=3,width=\linewidth]{figure/diagrams.pdf}
+  \includegraphics[page=3,width=.8\linewidth]{figure/diagrams.pdf}
   \caption{The u-net generator architecture.
   }\label{fig:unet:gen}
 \end{figure}
@@ -145,13 +145,22 @@ normalization and dropout is only used in Decoder \num{4} and Decoder \num{5}
 as noted in \Cref{fig:unet:gen}.
 \begin{table}[h]
   \centering
-  \begin{tabular}{lcccc}
+  \begin{tabular}{lrrrc}
     \toprule
-    Block & Kernel & Strides & Padding & Initializer \\
+    Type & Kernel & Filters & Strides & Output Shape \\
     \midrule
-    Encode & \num{4} & \num{2} & Same & Xavier \\
-    Decode & \num{4} & \num{2} & Same & Xavier \\
-    Final  & \num{3} & \num{2} & Same & Xavier \\
+    Input & & & & \num{384x384x1} \\ 
+    Convolution & \num{4} & \num{64}  & \num{2} & \num{192x192x64} \\
+    Convolution & \num{4} & \num{128}  & \num{2} & \num{96x96x128} \\
+    Convolution & \num{4} & \num{256}  & \num{2} & \num{48x48x256} \\
+    Convolution & \num{4} & \num{512}  & \num{2} & \num{24x24x512} \\
+    Convolution & \num{4} & \num{512}  & \num{2} & \num{12x12x512} \\
+    Deconvolution & \num{4} & \num{512}  & \num{2} & \num{24x24x512} \\
+    Deconvolution & \num{4} & \num{512}  & \num{2} & \num{48x48x512} \\
+    Deconvolution & \num{4} & \num{256}  & \num{2} & \num{96x96x256} \\
+    Deconvolution & \num{4} & \num{128}  & \num{2} & \num{192x192x128} \\
+    Deconvolution & \num{4} & \num{64}  & \num{2} & \num{384x384x64} \\
+    Deconvolution & \num{3} & \num{1}  & \num{1} & \num{384x384x1} \\
     \bottomrule
   \end{tabular}
   \caption{Convolution parameters used in the u-net blocks.
@@ -175,7 +184,7 @@ has also already been applied successfully to the task of \gls{mri} to
 \gls{ct} translation~\cite{Wolterink17}.
 \begin{figure}[h]
   \centering
-  \includegraphics[page=4,width=\linewidth]{figure/diagrams.pdf}
+  \includegraphics[page=4,width=.8\linewidth]{figure/diagrams.pdf}
   \caption{The pixtopix discriminator architecture.
 	}\label{fig:pixtopix:disc}
 \end{figure}
@@ -217,13 +226,13 @@ complexity in the pre- and postprocessing, as we need to extract the patches
 first from the volume and then need to recombine them at a later stage.
 \begin{figure}[h]
   \centering
-  \includegraphics[page=5,width=\linewidth]{figure/diagrams.pdf}
+  \includegraphics[page=5,width=.8\linewidth]{figure/diagrams.pdf}
   \caption{The contxt-aware 3D synthesis generator architecture.
   }\label{fig:synthesis:gen}
 \end{figure}
 \begin{figure}[h]
   \centering
-  \includegraphics[page=6,width=\linewidth]{figure/diagrams.pdf}
+  \includegraphics[page=6,width=.8\linewidth]{figure/diagrams.pdf}
   \caption{The context-aware 3D synthesis discriminator architecture.
 	}\label{fig:synthesis:disc}
 \end{figure}
@@ -271,7 +280,7 @@ the padding and the stride parameter in order to get the dimension reduction
 to $16\times16\times\16$.
 \begin{figure}[h]
   \centering
-  \includegraphics[page=7,width=\linewidth]{figure/diagrams.pdf}
+  \includegraphics[page=7,width=.8\linewidth]{figure/diagrams.pdf}
   \caption{The auto-context model used in ontext-aware 3D synthesis for
     image refinement.
 	}\label{fig:synthesis:refine}

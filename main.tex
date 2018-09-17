@@ -1,12 +1,12 @@
 \documentclass[
 	a4paper,
 	abstracton,
-	twocolumn,
 	emulatestandardclasses
 ]{scrartcl}
 
 \usepackage[english]{babel}
 \usepackage{xcolor}
+\usepackage{a4wide}
 \usepackage{authblk}
 \usepackage{amsthm}
 \usepackage{amsmath}
@@ -20,9 +20,7 @@
 ]{biblatex}
 \usepackage{graphicx}
 \usepackage{hyperref}
-\usepackage[
-	nameinlink
-]{cleveref}
+\usepackage{cleveref}
 \usepackage[binary-units]{siunitx}
 \usepackage[
 	margin=10pt,
@@ -64,17 +62,13 @@
 \newacronym{mae}{MAE}{mean absolute error}
 \newacronym{mse}{MSE}{mean squared error}
 \newacronym{gan}{GAN}{generative adversarial network}
+\newacronym{gdl}{GDL}{gradient distance loss}
 
 \begin{document}
 
 \makeatletter
-\twocolumn[
-	\begin{@twocolumnfalse} 
-		\maketitle
-		\input{section/abstract}
-		\vspace{1em}
-	\end{@twocolumnfalse}
-]
+\maketitle
+\input{section/abstract}
 \makeatother
 
 \input{section/intro}
