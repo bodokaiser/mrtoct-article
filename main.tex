@@ -63,6 +63,14 @@
 \newacronym{mse}{MSE}{mean squared error}
 \newacronym{gan}{GAN}{generative adversarial network}
 \newacronym{gdl}{GDL}{gradient distance loss}
+\newacronym{psnr}{PSNR}{peak signal-to-noise ratio}
+
+% required to load imshow plots
+\newcommand\inputpgf[2]{{
+\let\pgfimageWithoutPath\pgfimage
+\renewcommand{\pgfimage}[2][]{\pgfimageWithoutPath[##1]{#1/##2}}
+\input{#1/#2}
+}}
 
 \begin{document}
 

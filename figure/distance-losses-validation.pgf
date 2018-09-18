@@ -1,0 +1,176 @@
+%% Creator: Matplotlib, PGF backend
+%%
+%% To include the figure in your LaTeX document, write
+%%   \input{<filename>.pgf}
+%%
+%% Make sure the required packages are loaded in your preamble
+%%   \usepackage{pgf}
+%%
+%% Figures using additional raster images can only be included by \input if
+%% they are in the same directory as the main LaTeX file. For loading figures
+%% from other directories you can use the `import` package
+%%   \usepackage{import}
+%% and then include the figures with
+%%   \import{<path to file>}{<filename>.pgf}
+%%
+%% Matplotlib used the following preamble
+%%   \usepackage{amsmath}\usepackage{siunitx}\usepackage{lmodern}
+%%   \usepackage{fontspec}
+%%
+\begingroup%
+\makeatletter%
+\begin{pgfpicture}%
+\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{12.000000in}{12.000000in}}%
+\pgfusepath{use as bounding box, clip}%
+\begin{pgfscope}%
+\pgfsetbuttcap%
+\pgfsetmiterjoin%
+\pgfsetlinewidth{0.000000pt}%
+\definecolor{currentstroke}{rgb}{1.000000,1.000000,1.000000}%
+\pgfsetstrokecolor{currentstroke}%
+\pgfsetdash{}{0pt}%
+\pgfpathmoveto{\pgfqpoint{0.000000in}{0.000000in}}%
+\pgfpathlineto{\pgfqpoint{12.000000in}{0.000000in}}%
+\pgfpathlineto{\pgfqpoint{12.000000in}{12.000000in}}%
+\pgfpathlineto{\pgfqpoint{0.000000in}{12.000000in}}%
+\pgfpathclose%
+\pgfusepath{}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{0.230550in}{8.531232in}}{\pgfqpoint{2.093861in}{2.748768in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{0.230000in}{8.530000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.096667in,height=2.750000in]{distance-losses-validation-img0.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgftext[x=1.277480in,y=11.557778in,,base]{\fontsize{16.000000}{19.200000}\selectfont Ground Truth}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{2.591810in}{8.531232in}}{\pgfqpoint{2.093861in}{2.748768in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{2.593333in}{8.530000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.093333in,height=2.750000in]{distance-losses-validation-img1.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgftext[x=3.638740in,y=11.557778in,,base]{\fontsize{16.000000}{19.200000}\selectfont \(\displaystyle \lambda_\text{mae}=1\)}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{4.953070in}{8.531232in}}{\pgfqpoint{2.093861in}{2.748768in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{4.953333in}{8.530000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.096667in,height=2.750000in]{distance-losses-validation-img2.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgftext[x=6.000000in,y=11.557778in,,base]{\fontsize{16.000000}{19.200000}\selectfont \(\displaystyle \lambda_\text{mse}=1\)}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{7.314330in}{8.531232in}}{\pgfqpoint{2.093861in}{2.748768in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{7.313333in}{8.530000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.096667in,height=2.750000in]{distance-losses-validation-img3.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgftext[x=8.361260in,y=11.557778in,,base]{\fontsize{16.000000}{19.200000}\selectfont \(\displaystyle \lambda_\text{mae}=1,\lambda_\text{gdl}=\num{1e-6}\)}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{9.675589in}{8.531232in}}{\pgfqpoint{2.093861in}{2.748768in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{9.676667in}{8.530000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.096667in,height=2.750000in]{distance-losses-validation-img4.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgftext[x=10.722520in,y=11.557778in,,base]{\fontsize{16.000000}{19.200000}\selectfont \(\displaystyle \lambda_\text{mae}=1,\lambda_\text{gdl}=\num{1e-7}\)}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{0.120000in}{5.755583in}}{\pgfqpoint{2.314961in}{2.692578in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{0.120000in}{5.756667in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.316667in,height=2.693333in]{distance-losses-validation-img5.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{2.481260in}{5.755583in}}{\pgfqpoint{2.314961in}{2.692578in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{2.480000in}{5.756667in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.313333in,height=2.693333in]{distance-losses-validation-img6.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{4.842520in}{5.755583in}}{\pgfqpoint{2.314961in}{2.692578in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{4.843333in}{5.756667in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.316667in,height=2.693333in]{distance-losses-validation-img7.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{7.203780in}{5.755583in}}{\pgfqpoint{2.314961in}{2.692578in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{7.203333in}{5.756667in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.316667in,height=2.693333in]{distance-losses-validation-img8.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{9.565039in}{5.755583in}}{\pgfqpoint{2.314961in}{2.692578in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{9.566667in}{5.756667in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.316667in,height=2.693333in]{distance-losses-validation-img9.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{0.120000in}{3.010641in}}{\pgfqpoint{2.314961in}{2.574974in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{0.120000in}{3.010000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.316667in,height=2.576667in]{distance-losses-validation-img10.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{2.481260in}{3.010641in}}{\pgfqpoint{2.314961in}{2.574974in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{2.480000in}{3.010000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.313333in,height=2.576667in]{distance-losses-validation-img11.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{4.842520in}{3.010641in}}{\pgfqpoint{2.314961in}{2.574974in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{4.843333in}{3.010000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.316667in,height=2.576667in]{distance-losses-validation-img12.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{7.203780in}{3.010641in}}{\pgfqpoint{2.314961in}{2.574974in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{7.203333in}{3.010000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.316667in,height=2.576667in]{distance-losses-validation-img13.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{9.565039in}{3.010641in}}{\pgfqpoint{2.314961in}{2.574974in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{9.566667in}{3.010000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.316667in,height=2.576667in]{distance-losses-validation-img14.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{0.182986in}{0.120000in}}{\pgfqpoint{2.188989in}{2.748768in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{0.183333in}{0.120000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.190000in,height=2.750000in]{distance-losses-validation-img15.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{2.544246in}{0.120000in}}{\pgfqpoint{2.188989in}{2.748768in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{2.543333in}{0.120000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.190000in,height=2.750000in]{distance-losses-validation-img16.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{4.905506in}{0.120000in}}{\pgfqpoint{2.188989in}{2.748768in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{4.906667in}{0.120000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.190000in,height=2.750000in]{distance-losses-validation-img17.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{7.266765in}{0.120000in}}{\pgfqpoint{2.188989in}{2.748768in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{7.266667in}{0.120000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.190000in,height=2.750000in]{distance-losses-validation-img18.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{9.628025in}{0.120000in}}{\pgfqpoint{2.188989in}{2.748768in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{9.626667in}{0.120000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.190000in,height=2.750000in]{distance-losses-validation-img19.png}}%
+\end{pgfscope}%
+\end{pgfpicture}%
+\makeatother%
+\endgroup%

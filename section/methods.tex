@@ -39,7 +39,10 @@ dataset also offer \gls{pd} and \gls{mp} \gls{rage} weighted \gls{mri}s. Some
 used the \gls{t1} weighted \gls{mri} together with the \gls{ct} as input and
 target data as these give us the highest subject count. However, it would be
 an interesting experiment to supply different \gls{mri}s as multi-channel
-input.
+input. The \num{17} subjects were divided into \gls{13} subjects for training
+and \gls{4} subjects for validation. We respected the transverse resolution,
+i.e.\ the number of transverse slices, for the division of the dataset, in
+that the validation subjects offer a high transverse resolution.
 
 \subsection{Preprocessing}
 
@@ -211,7 +214,7 @@ sigmoid.
   \caption{Network parameters used in the pixtopix discriminator.
   }\label{tab:pixtopix:disc}
 \end{table}
-\Cref{tab:pixtopix:conv} lists the network parameters used for the pixtopix
+\Cref{tab:pixtopix:disc} lists the network parameters used for the pixtopix
 discriminator network. The input comprises the input \gls{mri} with either 
 the real or fake \gls{ct} concated at the last dimension. The final output is
 a score map of shape $1\times24\times512$.
@@ -272,7 +275,7 @@ well as max pooling over transposed convolution (deconvolution).
   \caption{Network parameters used in the context-aware 3D synthesis generator.
   }\label{tab:synthesis:gen}
 \end{table}
-\Cref{tab:synthesis:blocks} discloses the network parameters of the generator.
+\Cref{tab:synthesis:gen} discloses the network parameters of the generator.
 Though the kernel size was given in Ref.~\cite{Nie16}, we had to experiment
 with the padding algorithm and the stride parameter in order to reproduce the
 dimension reduction to $16\times16\times\16$.
@@ -305,7 +308,7 @@ each feature channel of the output of the last max pooling layer with each
 other. The final output score map is of shape \num{8x8x8x1}.
 \begin{figure}[h]
   \centering
-  \includegraphics[page=7,width=.8\linewidth]{figure/diagrams.pdf}
+  \includegraphics[page=7,width=.6\linewidth]{figure/diagrams.pdf}
   \caption{The auto-context model used in ontext-aware 3D synthesis for
     image refinement.
 	}\label{fig:synthesis:refine}

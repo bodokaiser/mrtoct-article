@@ -2,19 +2,19 @@
 
 We had difficulties with the implementation of the patch aggregation required
 for the implementation of the context-aware 3D synthesis. Though patch
-aggregation worked in general, it occupied more time then the actual training.
-Unfortunatly we were not able to find a workaround or to allocate more
-computation quota, henceforth we did not overcome more then one iteration of
-the auto-context model and did not perform more experiments with this model
-as we could not guarantee a fair comparison. However, we encourage everyone
-to test our implementation themselves. Consequently we only conducted
-experiments with the u-net generator and the pixtopix \gls{gan}.
+aggregation worked in general, it occupied more computational resources than
+the actual training. Unfortunatly we were not able to find a workaround or to
+allocate more computation quota. Therefor we did not perform more than one
+iteration of the auto-context model, which prevented a fair comparison.
+However, we encourage everyone to test our implementation themselves.
+As a consequence we only conducted experiments with the u-net generator and
+the pixtopix \gls{gan}.
 
 \subsection{Distance Losses}
 
 One experimental parameter of interest was the performance impact of the
 different loss functions. We first optimized the loss function used when
-only training the u-net. Let $X,Y\in[0,1]^N$ be output and target vectors,
+only training the u-net. Let $X,Y\in{[0,1]}^N$ be output and target vectors,
 then we define the \gls{mae} to be
 \begin{equation}
   \mae\left(X,Y\right)
@@ -28,7 +28,7 @@ The \gls{mse} we define via
   \mse\left(X,Y\right)
   =
   \frac{1}{N}\sum_{i=1}^N
-  \left(X_i-Y_j\right)^2
+  {\left(X_i-Y_j\right)}^2
   \label{eq:mse}.
 \end{equation}
 Finally the \gls{gdl} disclosed in Ref.~\cite{Nie16} is defined as
@@ -49,6 +49,77 @@ of the spatial gradient through
   \end{cases}
   \label{eq:grad}.
 \end{equation}
+The loss terms can of course be combined
+\begin{equation}
+  \lambda_\text{MAE}\mae\left(X,Y\right)
+  +
+  \lambda_\text{MSE}\mse\left(X,Y\right)
+  +
+  \lambda_\text{GDL}\gdl\left(X,Y\right),
+\end{equation}
+wherein the $\lambda$ denotes the weight of the respective loss term.
+\begin{table}[h]
+  \centering
+  \begin{tabular}{cccccc}
+    \toprule
+    $\lambda_\text{mae}$ &
+    $\lambda_\text{mse}$ &
+    $\lambda_\text{gdl}$ &
+    \acrshort{mae} &
+    \acrshort{mse} &
+    \acrshort{psnr} \\
+    \midrule
+    \num{1} & \num{0} & \num{0} & \num{817} & \num{1121e3} & \num{35.9} \\
+    \num{0} & \num{1} & \num{0} & \num{868} & \num{1222e3} & \num{35.5} \\
+    \num{3} & \num{0} & \num{1} & \num{779} & \num{1023e3} & \num{36.3} \\
+    \num{1} & \num{0} & \num{1e-6} & \num{779} & \num{1023e3} & \num{36.3} \\
+    \num{1} & \num{0} & \num{1e-7} & \num{86} & \num{52e3} & \num{50.2} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Distance metrics for the u-net model trained with different loss
+    functions, evaluated on the training dataset.
+  }\label{tab:distance:training}
+\end{table}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{cccccc}
+    \toprule
+    $\lambda_\text{mae}$ &
+    $\lambda_\text{mse}$ &
+    $\lambda_\text{gdl}$ &
+    \acrshort{mae} &
+    \acrshort{mse} &
+    \acrshort{psnr} \\
+    \midrule
+    \num{1} & \num{0} & \num{0} & \num{812} & \num{1150e3} & \num{35.7} \\
+    \num{0} & \num{1} & \num{0} & \num{863} & \num{1252e3} & \num{35.4} \\
+    \num{3} & \num{0} & \num{1} & \num{771} & \num{1043e3} & \num{36.2} \\
+    \num{1} & \num{0} & \num{1e-6} & \num{771} & \num{1043e3} & \num{36.2} \\
+    \num{1} & \num{0} & \num{1e-7} & \num{132} & \num{95e3} & \num{47.0} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Distance metrics for the u-net model trained with different loss
+    functions, evaluated on the validation dataset.
+  }\label{tab:distance:validation}
+\end{table}
+\begin{figure}[h]
+  \centering
+  \begin{adjustbox}{width=\linewidth}
+    \inputpgf{figure}{distance-losses-training.pgf}
+  \end{adjustbox}
+  \caption{Transverse views for the u-net model trained with different
+    loss functions, evaluated on the training dataset.
+  }\label{fig:distance:training}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \begin{adjustbox}{width=\linewidth}
+    \inputpgf{figure}{distance-losses-validation.pgf}
+  \end{adjustbox}
+  \caption{Transverse views for the u-net model trained with different
+    loss functions, evaluated on the validation dataset.
+  }\label{fig:distance:validation}
+\end{figure}
 
 \subsection{Adversarial Losses}
 
