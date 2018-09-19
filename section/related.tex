@@ -1,43 +1,39 @@
 \section{Related Work}
 
-Since the early days of CTs health manufacturer were attempted to reduce
-radiation exposure in CT scans by using i.e. more sensible detection
-electronics and more sophisticated scanning sequences. Through the growing
-availability of computing power we also find evermore computer vision
-techniques being utilized, for example to enhance the image quality of
-low-dose CTs \cite{Xu12}. Altough these efforts have lead to an
-impressive and steady evolution of CT apparatus, they still require the
-patient to be irradiated.
-
-First approaches which dispense with radiation exposure, relay on the
-atlas based transformations applied to MR to predict CT \cite{Hofmann08}.
-Further improvements included i.e. random forests \cite{Andreasen13}.
-It has been shown that CT prediction can in fact replace CT for treatment
-planning \cite{Andreasen2017}.
-
-In computer science we have seen an incredible progress with
-deep learning techniques in a variety of areas including natural language
-processing and computer vision \cite{LeCun15}. Recent efforts with generative
-adversarial networks (GANs) \cite{Goodfellow14} seem to be a promising
-path towards the challenge of finding appropriate target functions to optimize
-through the use of game theory. Successful applications in computer vision
-in which GANs proved significant improvements over the former state of art
-include the task of image to image translation \cite{Isola16} but also the
+Since the early days of \gls{ct}, health manufacturer were attempted to reduce
+radiation exposure in \gls{ct} scans by using, for instance, more sensible
+detection electronics, and more sophisticated scanning sequences. Through the
+growing availability of computing power we also find evermore computer vision
+techniques being utilized, for example, in the enhancement of image quality of
+low-dose \gls{ct}s~\cite{Xu12}. Altough these efforts have lead to an
+impressive and steady evolution of the \gls{ct} apparatus, they still require
+the patient to be irradiated nevertheless.
+First approaches which dispense the radiation exposure, through the
+computational transformation of \gls{mri} to \gls{ct}, relay on the
+atlas-based transformations applied to \gls{mri} to predict \gls{ct}, see
+Ref.~\cite{Hofmann08}. Further improvements thereto include, for instance,
+random forests~\cite{Andreasen13}. Finally it has been shown that these
+\gls{ct} prediction methods can in fact already replace physical \gls{ct}
+for treatment planning~\cite{Andreasen2017}.
+At the same time, we have seen an incredible progress with deep learning
+techniques in computer science~\cite{LeCun15}. Recent efforts with \gls{gan}s,
+see Ref.~\cite{Goodfellow14}, seem to be a promising path towards finding
+a global optimum in training neural networks through the use of game theory.
+Furthermore \gls{gan}s proved significant improvements over the former state
+of art in the task of image to image translation~\cite{Isola16} but also the
 generalization of three dimensional structures inside the so called latent
-space \cite{ZXFT16}.
-
-This in mind the medical computer vision community rapidly adapted
-GANs for their own specific tasks which in comparison to computer
-vision typical involve volumetric single channel images with high bit depth.
-Bearing the challenge of CT from MR prediction the expectations towards GANs
-have been met showing overall better results compared to the previous
-approach \cite{Nie16}. Additionally the full potential of GANs have not
-been exhausted yet as it also has been shown that GANs are capable of
-being trained with unregistered modalities \cite{Wolterink17}.
-
+space~\cite{ZXFT16}.
+Keeping this in mind, the medical computer vision community rapidly adapted
+\gls{gan}s for their own specific tasks. In comparison to datasets common in
+general computer vision, medical datasets typical comprise volumetric single
+channel images with high bit depth. Bearing the challenge of \gls{ct} from
+\gls{mri} prediction in mind, the expectations towards \gls{gan}s have been
+lately shown increased performance to the previous approaches~\cite{Nie16}.
+Yet, the full potential of \gls{gan}s have not been exhausted. For example,
+it has been shown that \gls{gan}s are capable of being trained with
+unregistered modalities~\cite{Wolterink17}.
 Beside the enourmous breakthroughs made in medical computer vision we still
 see a shortage in a reproducable comparison of recent methods with publicly
 available data. Not to mention the open questions with regard to best
-practices in choosing good GAN model parameters for the task of CT prediction
-which we hope to address in the subsequent sections.
-
+practices in choosing good \gls{gan} model parameters for the task of
+\gls{ct} prediction which we hope to address in the subsequent sections.
