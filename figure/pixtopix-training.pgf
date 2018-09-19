@@ -1,0 +1,122 @@
+%% Creator: Matplotlib, PGF backend
+%%
+%% To include the figure in your LaTeX document, write
+%%   \input{<filename>.pgf}
+%%
+%% Make sure the required packages are loaded in your preamble
+%%   \usepackage{pgf}
+%%
+%% Figures using additional raster images can only be included by \input if
+%% they are in the same directory as the main LaTeX file. For loading figures
+%% from other directories you can use the `import` package
+%%   \usepackage{import}
+%% and then include the figures with
+%%   \import{<path to file>}{<filename>.pgf}
+%%
+%% Matplotlib used the following preamble
+%%   \usepackage{amsmath}\usepackage{siunitx}\usepackage{lmodern}
+%%   \usepackage{fontspec}
+%%
+\begingroup%
+\makeatletter%
+\begin{pgfpicture}%
+\pgfpathrectangle{\pgfpointorigin}{\pgfqpoint{12.000000in}{16.000000in}}%
+\pgfusepath{use as bounding box, clip}%
+\begin{pgfscope}%
+\pgfsetbuttcap%
+\pgfsetmiterjoin%
+\pgfsetlinewidth{0.000000pt}%
+\definecolor{currentstroke}{rgb}{1.000000,1.000000,1.000000}%
+\pgfsetstrokecolor{currentstroke}%
+\pgfsetdash{}{0pt}%
+\pgfpathmoveto{\pgfqpoint{0.000000in}{0.000000in}}%
+\pgfpathlineto{\pgfqpoint{12.000000in}{0.000000in}}%
+\pgfpathlineto{\pgfqpoint{12.000000in}{16.000000in}}%
+\pgfpathlineto{\pgfqpoint{0.000000in}{16.000000in}}%
+\pgfpathclose%
+\pgfusepath{}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{0.622560in}{11.374975in}}{\pgfqpoint{2.863300in}{3.665025in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{0.623333in}{11.373333in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.860000in,height=3.666667in]{pixtopix-training-img0.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgftext[x=2.054211in,y=15.317778in,,base]{\fontsize{16.000000}{19.200000}\selectfont Ground Truth}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{4.568350in}{11.374975in}}{\pgfqpoint{2.863300in}{3.665025in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{4.570000in}{11.373333in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.863333in,height=3.666667in]{pixtopix-training-img1.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgftext[x=6.000000in,y=15.317778in,,base]{\fontsize{16.000000}{19.200000}\selectfont pixtopix}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{8.514139in}{11.374975in}}{\pgfqpoint{2.863300in}{3.665025in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{8.513333in}{11.373333in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.863333in,height=3.666667in]{pixtopix-training-img2.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgftext[x=9.945789in,y=15.317778in,,base]{\fontsize{16.000000}{19.200000}\selectfont pixtopix (boosted)}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{0.657479in}{7.636650in}}{\pgfqpoint{2.793464in}{3.665025in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{0.656667in}{7.636667in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.796667in,height=3.666667in]{pixtopix-training-img3.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{4.603268in}{7.636650in}}{\pgfqpoint{2.793464in}{3.665025in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{4.603333in}{7.636667in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.796667in,height=3.666667in]{pixtopix-training-img4.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{8.549058in}{7.636650in}}{\pgfqpoint{2.793464in}{3.665025in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{8.550000in}{7.636667in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=2.796667in,height=3.666667in]{pixtopix-training-img5.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{0.354752in}{3.898325in}}{\pgfqpoint{3.398917in}{3.665025in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{0.353333in}{3.896667in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=3.400000in,height=3.663333in]{pixtopix-training-img6.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{4.300541in}{3.898325in}}{\pgfqpoint{3.398917in}{3.665025in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{4.300000in}{3.896667in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=3.400000in,height=3.663333in]{pixtopix-training-img7.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{8.246331in}{3.898325in}}{\pgfqpoint{3.398917in}{3.665025in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{8.246667in}{3.896667in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=3.400000in,height=3.663333in]{pixtopix-training-img8.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{0.423212in}{0.160000in}}{\pgfqpoint{3.261998in}{3.665025in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{0.423333in}{0.160000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=3.263333in,height=3.666667in]{pixtopix-training-img9.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{4.369001in}{0.160000in}}{\pgfqpoint{3.261998in}{3.665025in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{4.370000in}{0.160000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=3.260000in,height=3.666667in]{pixtopix-training-img10.png}}%
+\end{pgfscope}%
+\begin{pgfscope}%
+\pgfpathrectangle{\pgfqpoint{8.314791in}{0.160000in}}{\pgfqpoint{3.261998in}{3.665025in}}%
+\pgfusepath{clip}%
+\pgfsys@transformshift{8.313333in}{0.160000in}%
+\pgftext[left,bottom]{\pgfimage[interpolate=true,width=3.263333in,height=3.666667in]{pixtopix-training-img11.png}}%
+\end{pgfscope}%
+\end{pgfpicture}%
+\makeatother%
+\endgroup%

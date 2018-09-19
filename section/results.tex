@@ -86,7 +86,7 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
   \end{tabular}
   \caption{Training and validation dataset volumes used in this section. The
     dimensions of the shape correspond to depth, height and width.
-  }\label{tab:distance:dataset}
+  }\label{tab:unet:dataset}
 \end{table}
 
 \begin{table}[h]
@@ -94,15 +94,15 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
   \begin{tabular}{cccccc}
     \toprule
     & &
-    \multicolumn{2}{c}{$\lambda_\text{mae}=1,\lambda_\text{gdl}=0$} &
-    \multicolumn{2}{c}{$\lambda_\text{mae}=1,\lambda_\text{gdl}=\num{1e-7}$} \\
+    \multicolumn{2}{c}{\acrshort{mae}} &
+    \multicolumn{2}{c}{\acrshort{mae}+\acrshort{gdl}} \\
     Image Slices & Batch Size & Steps & Epochs & Steps & Epochs \\
     \midrule
     \num{2157} & \num{16} & \num{20542} & \num{152} & \num{19388} & \num{143} \\
     \bottomrule
   \end{tabular}
   \caption{Training parameters used for the distance metrics experiments.
-  }\label{tab:distance:params}
+  }\label{tab:unet:params}
 \end{table}
 
 \begin{table}[h]
@@ -121,7 +121,7 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
   \end{tabular}
   \caption{Distance metrics for the u-net model trained with different loss
     functions, evaluated on the training dataset.
-  }\label{tab:distance:training}
+  }\label{tab:unet:training}
 \end{table}
 \begin{table}[h]
   \centering
@@ -139,31 +139,203 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
   \end{tabular}
   \caption{Distance metrics for the u-net model trained with different loss
     functions, evaluated on the validation dataset.
-  }\label{tab:distance:validation}
+  }\label{tab:unet:validation}
 \end{table}
 \begin{figure}[h]
   \centering
   \begin{adjustbox}{width=\linewidth}
-    \inputpgf{figure}{distance-losses-training.pgf}
+    \inputpgf{figure}{unet-training.pgf}
   \end{adjustbox}
   \caption{Transverse views for the u-net model trained with different
     loss functions, evaluated on the training dataset.
-  }\label{fig:distance:training}
+  }\label{fig:unet:training}
 \end{figure}
 \begin{figure}[h]
   \centering
   \begin{adjustbox}{width=\linewidth}
-    \inputpgf{figure}{distance-losses-validation.pgf}
+    \inputpgf{figure}{unet-validation.pgf}
   \end{adjustbox}
   \caption{Transverse views for the u-net model trained with different
     loss functions, evaluated on the validation dataset.
-  }\label{fig:distance:validation}
+  }\label{fig:unet:validation}
 \end{figure}
 
 \subsection{Adversarial Losses}
 
-% LSGAN, MinMaxAdvLoss
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ccc}
+    \toprule
+    Dataset & Subject & Shape \\
+    \midrule
+    Training & \num{1} & \num{137x320x250x1} \\
+    Training & \num{2} & \num{130x328x250x1} \\
+    Training & \num{3} & \num{111x303x281x1} \\
+    Training & \num{4} & \num{143x291x259x1} \\
+    Training & \num{5} & \num{141x307x284x1} \\
+    Training & \num{6} & \num{148x278x267x1} \\
+    Training & \num{7} & \num{198x289x268x1} \\
+    Training & \num{8} & \num{208x282x238x1} \\
+    Training & \num{9} & \num{162x322x252x1} \\
+    Training & \num{10} & \num{185x303x243x1} \\
+    Training & \num{11} & \num{180x317x239x1} \\
+    Training & \num{12} & \num{184x310x248x1} \\
+    Training & \num{13} & \num{93x313x238x1} \\
+    Validation & \num{1} & \num{105x298x227x1} \\
+    Validation & \num{2} & \num{190x328x282x1} \\
+    Validation & \num{3} & \num{202x307x276x1} \\
+    Validation & \num{4} & \num{198x329x262x1} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Training and validation dataset volumes used in this section. The
+    dimensions of the shape correspond to depth, height and width.
+  }\label{tab:unet_pixtopix:dataset}
+\end{table}
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{cccccc}
+    \toprule
+    & &
+    \multicolumn{2}{c}{u-net (\gls{mae})} &
+    \multicolumn{2}{c}{pixtopix} \\
+    Image Slices & Batch Size & Steps & Epochs & Steps & Epochs \\
+    \midrule
+    \num{2020} & \num{16} & \num{22080} & \num{174} & \num{37832} & \num{299} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Training parameters used for the u-net and pixtopix comparison.
+  }\label{tab:unet_pixtopix:params}
+\end{table}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ccccc}
+    \toprule
+    Model & Loss &
+    \acrshort{mae} &
+    \acrshort{mse} &
+    \acrshort{psnr} \\
+    \midrule
+    u-net & \acrshort{mae} & \num{90.5} & \num{61853} & \num{49.4} \\
+    pixtopix & least-square & \num{21.6} & \num{4210} & \num{60.4} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Distance metrics for the u-net model trained with \acrshort{mae}
+    loss compared with the pixtopix model trained with least-square adversarial
+    loss, evaluated on the training dataset.
+  }\label{tab:unet_pixtopix:training}
+\end{table}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ccccc}
+    \toprule
+    Model & Loss &
+    \acrshort{mae} &
+    \acrshort{mse} &
+    \acrshort{psnr} \\
+    \midrule
+    u-net & \acrshort{mae} & \num{136.9} & \num{101943} & \num{46.77} \\
+    pixtopix & least-square & \num{112.7} & \num{82173} & \num{47.55} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Distance metrics for the u-net model trained with \acrshort{mae}
+    loss compared with the pixtopix model trained with least-square adversarial
+    loss, evaluated on the validation dataset.
+  }\label{tab:unet_pixtopix:training}
+\end{table}
+\begin{figure}[h]
+  \centering
+  \begin{adjustbox}{width=\linewidth}
+    \inputpgf{figure}{unet-pixtopix-training.pgf}
+  \end{adjustbox}
+  \caption{Transverse views for the u-net model trained with \acrshort{mae}
+    loss compared with the pixtopix model trained with least-square adversarial
+    loss, evaluated on the training dataset.
+  }\label{fig:unet_pixtopix:training}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \begin{adjustbox}{width=\linewidth}
+    \inputpgf{figure}{unet-pixtopix-validation.pgf}
+  \end{adjustbox}
+  \caption{Transverse views for the u-net model trained with \acrshort{mae}
+    loss compared with the pixtopix model trained with least-square adversarial
+    loss, evaluated on the validation dataset.
+  }\label{fig:unet_pixtopix:validation}
+\end{figure}
 
 \subsection{Gradient Boost}
 
-% Boost brain matter tissue
+\begin{table}[h]
+  \centering
+  \begin{tabular}{cccccc}
+    \toprule
+    & &
+    \multicolumn{2}{c}{u-net (\gls{mae})} &
+    \multicolumn{2}{c}{pixtopix} \\
+    Image Slices & Batch Size & Steps & Epochs & Steps & Epochs \\
+    \midrule
+    \num{2020} & \num{16} & \num{37832} & \num{299} & \num{51911} & \num{411} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Training parameters used for pixtopix and gradient boosted
+    fine-tuned pixtopix model.
+  }\label{tab:pixtopix:params}
+\end{table}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ccccc}
+    \toprule
+    Model & Loss &
+    \acrshort{mae} &
+    \acrshort{mse} &
+    \acrshort{psnr} \\
+    \midrule
+    pixtopix & least-square & \num{21.56} & \num{4210} & \num{60.38} \\
+    pixtopix (boosted) & least-square & \num{23.37} & \num{4140} & \num{60.30} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Distance metrics for the pixtopix model trained with least-square
+    adversarial loss compared to fine-tuned with gradient boost, evaluated on
+    the training dataset.
+  }\label{tab:pixtopix:training}
+\end{table}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ccccc}
+    \toprule
+    Model & Loss &
+    \acrshort{mae} &
+    \acrshort{mse} &
+    \acrshort{psnr} \\
+    \midrule
+    pixtopix & least-square & \num{112.73} & \num{82173} & \num{47.55} \\
+    pixtopix & least-square & \num{112.23} & \num{79296} & \num{47.68} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Distance metrics for the pixtopix model trained with least-square
+    adversarial loss compared to fine-tuned with gradient boost, evaluated on
+    the validation dataset.
+  }\label{tab:pixtopix:validation}
+\end{table}
+\begin{figure}[h]
+  \centering
+  \begin{adjustbox}{width=\linewidth}
+    \inputpgf{figure}{pixtopix-training.pgf}
+  \end{adjustbox}
+  \caption{Transverse views for the pixtopix model trained with least-square
+    adversarial loss compared to fine-tuned with gradient boost, evaluated on
+    the validation dataset.
+  }\label{fig:pixtopix:training}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \begin{adjustbox}{width=\linewidth}
+    \inputpgf{figure}{pixtopix-validation.pgf}
+  \end{adjustbox}
+  \caption{Transverse views for the pixtopix model trained with least-square
+    adversarial loss compared to fine-tuned with gradient boost, evaluated on
+    the validation dataset.
+  }\label{fig:pixtopix:validation}
+\end{figure}
+
