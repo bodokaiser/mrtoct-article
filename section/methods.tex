@@ -324,3 +324,104 @@ single model instance on a pair of \gls{ct} and \gls{mr} patches. The
 predicted \gls{ct} then are used as input together with the \gls{mr} patches
 to train a second model instance. Applied iteratively this approach converges
 after three iterations~\cite{Nie16}.
+
+\subsection{Losses}
+
+Beside the preprocessing and the network architecture another important part
+in using neural network is the choice of a cost function. The cost function is
+necessary in order to calculate a gradient with respect to the network
+weights. The network weights are then updated according to their respective
+gradient and a convergence parameter of the optimizer. In this manner one
+hopes to find the optimal weights for a specific task.
+
+For our experiments we used the Adam optimizer, see Ref.~\cite{Kingma2014},
+with the parameters listed in \Cref{tab:optimizer}.
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ccc}
+    \toprule
+    Learning Rate & $\beta_1$ & $\beta_2$ \\
+    \midrule
+    \num{2e-4} & \num{5e-1} & \num{0.999} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Adam optimizer parameters used for our experiments.
+  }\label{tab:optimizer}
+\end{table}
+These parameters were choosen empirically for fast convergence and good
+results. That said there may of course exist better parameters.
+
+\subsubsection{Distance}
+
+Distance based losses are well-known from a wide range of scientific
+disciplines and correspond to a distance between two pixel values. We will
+present some distance losses now. Let $X,Y\in{[0,1]}^N$ be output and target
+vectors, then we define the \gls{mae} to be
+\begin{equation}
+  \mae\left(X,Y\right)
+  =
+  \frac{1}{N}\sum_{i=1}^N
+  \abs{X_i-Y_i}
+  \label{eq:dist:mae}.
+\end{equation}
+The \gls{mse} we define via
+\begin{equation}
+  \mse\left(X,Y\right)
+  =
+  \frac{1}{N}\sum_{i=1}^N
+  {\left(X_i-Y_j\right)}^2
+  \label{eq:dist:mse}.
+\end{equation}
+Finally the \gls{gdl} disclosed in Ref.~\cite{Nie16} is defined as
+\begin{equation}
+  \gdl\left(X,Y\right)
+  =
+  \mse\left(\grad X,\grad Y\right)
+  \label{eq:dist:gdl},
+\end{equation}
+wherein $\grad$ is the spatial gradient. We approximate the $i$th element
+of the spatial gradient through
+\begin{equation}
+  \grad X_i
+  \approx
+  \begin{cases}
+    X_i-X_{i+1}\qc\text{if }, $1<i<N$\\
+    0\qc\text{otherwise}
+  \end{cases}
+  \label{eq:dist:grad}.
+\end{equation}
+The loss terms can of course be combined
+\begin{equation}
+  \lambda_\text{MAE}\mae\left(X,Y\right)
+  +
+  \lambda_\text{MSE}\mse\left(X,Y\right)
+  +
+  \lambda_\text{GDL}\gdl\left(X,Y\right),
+\end{equation}
+wherein the $\lambda$ denotes the weight of the respective loss term.
+
+The \gls{mse} penalizes outliers stronger than the \gls{mae}. Furthermore the
+\gls{mse} offers a continous derivative whereas the \gls{mae} has undefined
+behaviour at $0$. The \gls{gdl} was reported to correct for strong
+edges~\cite{Nie16}, as present at the tissue boundaries in the brain.
+
+\subsubsection{Adversarial}
+
+A major shortcoming of the distance based losses is that they only consider
+pixel-wise deviations and thereby neglect more complex structures. With the
+advent of \gls{gan} one can think of the adversarial loss as an embodiment of
+more complex function that respects (local) structures. Given a discriminator
+network that outputs a score map for real $D(X)$ and fake data $D(Y)=D(G(Z))$,
+where $G(Z)$ is the generator output from the input vector $Z$, the
+standard adversarial loss is defined as
+\begin{equation}
+  -\log(\D(X))-\log(1-D(G(Z)))
+  \label{eq:adv:minmax}.
+\end{equation}
+Recently a modified least-squared adversarial loss
+\begin{equation}
+  -\log{\left(\D{(X)}^2\right)}-\log{\left({(1-D{\left(G{(Z)}\right)})}^2\right)}
+  \label{eq:adv:lsquare},
+\end{equation}
+has been reported that yields superior results and more stable training
+characteristics~\cite{Mao2016}.
