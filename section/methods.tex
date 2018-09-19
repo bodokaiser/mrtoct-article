@@ -73,7 +73,10 @@ are complex, we used the registration toolset included in the \gls{itk}
 library, see Ref.~\cite{Yaniv2018}.
 For the present work we choose the \gls{ct} volume to be fixed, as the
 \gls{ct} volumes are in general spatially normalized accross different
-subjects.
+subjects. Because the different modalities have in general different
+resolutions, we found that for the lower resolution modality the
+coregistration produced incomplete images for the transverse slices at the
+boundary. We manually removed these slices from the dataset.
 \begin{figure}[h]
   \centering
   \includegraphics[page=2,width=.8\linewidth]{figure/diagrams.pdf}
@@ -82,8 +85,8 @@ subjects.
 	}\label{fig:registration}
 \end{figure}
 Following the coregistration, we used the binary fill holes algorithm from
-SciPy~\cite{SciPy} to remove the \gls{ct} table present in some \gls{ct}
-volumes as well as well as the background noise.\footnote{The complete
+SciPy~\cite{SciPy} as an attempt to remove the \gls{ct} table present in some
+\gls{ct} volumes as well as well as the background noise.\footnote{The complete
 preprocessing described so far is available at
 \url{https://github/bodokaiser/mrtoct-scripts}.} Finally we converted the
 preprocessed pairs of \gls{mri} and \gls{ct} volumes to the tfrecord format
@@ -92,9 +95,9 @@ of the data pipeline implemented with Tensorflow we perform a pad or crop to
 either $384\times384$ for transverse 2D slices. In the 3D case we perform
 patch extraction of target shape $32\times32\times32$ for \gls{mri} and
 $16\times16\times16$ for \gls{ct}. The target shape for the 2D slices was
-choosen to be compatible with the convolution parameters and the largest
-resolution of all volumes. Furtheremore we applied a min-max-normalization in
-order to keep floating range arthimetic in a range of $[0,1]$.
+choosen a compromise between compatibility with the convolution parameters and
+reducing crop on the volumes. Furtheremore we applied a min-max-normalization
+in order to keep floating range arthimetic in a range of $[0,1]$.
 
 \subsection{Models}
 

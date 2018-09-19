@@ -58,22 +58,65 @@ The loss terms can of course be combined
   \lambda_\text{GDL}\gdl\left(X,Y\right),
 \end{equation}
 wherein the $\lambda$ denotes the weight of the respective loss term.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ccc}
+    \toprule
+    Dataset & Subject & Shape \\
+    \midrule
+    Training & \num{1} & \num{161x320x250x1} \\
+    Training & \num{2} & \num{149x328x250x1} \\
+    Training & \num{3} & \num{112x303x281x1} \\
+    Training & \num{4} & \num{155x291x259x1} \\
+    Training & \num{5} & \num{143x307x284x1} \\
+    Training & \num{6} & \num{149x278x267x1} \\
+    Training & \num{7} & \num{200x289x268x1} \\
+    Training & \num{8} & \num{218x282x238x1} \\
+    Training & \num{9} & \num{191x322x252x1} \\
+    Training & \num{10} & \num{200x303x243x1} \\
+    Training & \num{11} & \num{181x317x239x1} \\
+    Training & \num{12} & \num{186x310x248x1} \\
+    Training & \num{13} & \num{112x313x238x1} \\
+    Validation & \num{1} & \num{112x298x227x1} \\
+    Validation & \num{2} & \num{223x328x282x1} \\
+    Validation & \num{3} & \num{223x307x276x1} \\
+    Validation & \num{4} & \num{204x329x262x1} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Training and validation dataset volumes used in this section. The
+    dimensions of the shape correspond to depth, height and width.
+  }\label{tab:distance:dataset}
+\end{table}
+
 \begin{table}[h]
   \centering
   \begin{tabular}{cccccc}
     \toprule
+    & &
+    \multicolumn{2}{c}{$\lambda_\text{mae}=1,\lambda_\text{gdl}=0$} &
+    \multicolumn{2}{c}{$\lambda_\text{mae}=1,\lambda_\text{gdl}=\num{1e-7}$} \\
+    Image Slices & Batch Size & Steps & Epochs & Steps & Epochs \\
+    \midrule
+    \num{2157} & \num{16} & \num{20542} & \num{152} & \num{19388} & \num{143} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Training parameters used for the distance metrics experiments.
+  }\label{tab:distance:params}
+\end{table}
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ccccc}
+    \toprule
     $\lambda_\text{mae}$ &
-    $\lambda_\text{mse}$ &
     $\lambda_\text{gdl}$ &
     \acrshort{mae} &
     \acrshort{mse} &
     \acrshort{psnr} \\
     \midrule
-    \num{1} & \num{0} & \num{0} & \num{817} & \num{1121e3} & \num{35.9} \\
-    \num{0} & \num{1} & \num{0} & \num{868} & \num{1222e3} & \num{35.5} \\
-    \num{3} & \num{0} & \num{1} & \num{779} & \num{1023e3} & \num{36.3} \\
-    \num{1} & \num{0} & \num{1e-6} & \num{779} & \num{1023e3} & \num{36.3} \\
-    \num{1} & \num{0} & \num{1e-7} & \num{86} & \num{52e3} & \num{50.2} \\
+    \num{1} & \num{0} & \num{31.58} & \num{6577} & \num{59.5} \\
+    \num{1} & \num{1e-7} & \num{37.15} & \num{7945} & \num{58.1} \\
     \bottomrule
   \end{tabular}
   \caption{Distance metrics for the u-net model trained with different loss
@@ -82,20 +125,16 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
 \end{table}
 \begin{table}[h]
   \centering
-  \begin{tabular}{cccccc}
+  \begin{tabular}{ccccc}
     \toprule
     $\lambda_\text{mae}$ &
-    $\lambda_\text{mse}$ &
     $\lambda_\text{gdl}$ &
     \acrshort{mae} &
     \acrshort{mse} &
     \acrshort{psnr} \\
     \midrule
-    \num{1} & \num{0} & \num{0} & \num{812} & \num{1150e3} & \num{35.7} \\
-    \num{0} & \num{1} & \num{0} & \num{863} & \num{1252e3} & \num{35.4} \\
-    \num{3} & \num{0} & \num{1} & \num{771} & \num{1043e3} & \num{36.2} \\
-    \num{1} & \num{0} & \num{1e-6} & \num{771} & \num{1043e3} & \num{36.2} \\
-    \num{1} & \num{0} & \num{1e-7} & \num{132} & \num{95e3} & \num{47.0} \\
+    \num{1} & \num{0} & \num{123.6} & \num{70846} & \num{47.93} \\
+    \num{1} & \num{1e-7} & \num{129.0} & \num{72704} & \num{47.90} \\
     \bottomrule
   \end{tabular}
   \caption{Distance metrics for the u-net model trained with different loss
