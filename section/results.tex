@@ -7,58 +7,18 @@ the actual training. Unfortunatly we were not able to find a workaround or to
 allocate more computation quota. Therefor we did not perform more than one
 iteration of the auto-context model, which prevented a fair comparison.
 However, we encourage everyone to test our implementation themselves.
-As a consequence we only conducted experiments with the u-net generator and
+
+As a consequence we only conducted experiments with the u-net \gls{cnn} and
 the pixtopix \gls{gan}.
 
 \subsection{u-net}
 
-One experimental parameter of interest was the performance impact of the
-different loss functions. We first optimized the loss function used when
-only training the u-net. Let $X,Y\in{[0,1]}^N$ be output and target vectors,
-then we define the \gls{mae} to be
-\begin{equation}
-  \mae\left(X,Y\right)
-  =
-  \frac{1}{N}\sum_{i=1}^N
-  \abs{X_i-Y_i}
-  \label{eq:mae}.
-\end{equation}
-The \gls{mse} we define via
-\begin{equation}
-  \mse\left(X,Y\right)
-  =
-  \frac{1}{N}\sum_{i=1}^N
-  {\left(X_i-Y_j\right)}^2
-  \label{eq:mse}.
-\end{equation}
-Finally the \gls{gdl} disclosed in Ref.~\cite{Nie16} is defined as
-\begin{equation}
-  \gdl\left(X,Y\right)
-  =
-  \mse\left(\grad X,\grad Y\right)
-  \label{eq:gdl},
-\end{equation}
-wherein $\grad$ is the spatial gradient. We approximate the $i$th element
-of the spatial gradient through
-\begin{equation}
-  \grad X_i
-  \approx
-  \begin{cases}
-    X_i-X_{i+1}\qc\text{if }, $1<i<N$\\
-    0\qc\text{otherwise}
-  \end{cases}
-  \label{eq:grad}.
-\end{equation}
-The loss terms can of course be combined
-\begin{equation}
-  \lambda_\text{MAE}\mae\left(X,Y\right)
-  +
-  \lambda_\text{MSE}\mse\left(X,Y\right)
-  +
-  \lambda_\text{GDL}\gdl\left(X,Y\right),
-\end{equation}
-wherein the $\lambda$ denotes the weight of the respective loss term.
-
+The \num{17} subjects of the dataset were divided into \gls{13} subjects for
+training and \gls{4} subjects for validation. We tried to respect the
+transverse resolution of the initial volumes, i.e.\ the number of transverse
+slices, in the division process. In \Cref{tab:unet:dataset} we see the volume
+shape of the input \gls{mri} and the target \gls{ct} of the respective
+subject as well as their assignment to the training or validation dataset.
 \begin{table}[h]
   \centering
   \begin{tabular}{ccc}
@@ -88,7 +48,16 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
     dimensions of the shape correspond to depth, height and width.
   }\label{tab:unet:dataset}
 \end{table}
-
+The subjects assigned to the training dataset were processed in transverse
+slices. We trained the u-net model once with the \gls{mae} and once with the
+\gls{mae} and \gls{gdl} loss in order to estimate the impact of the \gls{gdl}.
+The training parameters are summarized in \Cref{tab:unet:params}. The image
+slices correspond to the total number of 2D images extracted from the
+transverse (depth) plane of the volumes. The batch size denotes the number of
+images proccessed in one step. For convenience we estimated the number of
+epochs from the total training step number. The training was stopped when the
+gradients vanished and the total loss stabilized. We found that these criteria
+were met for the u-net model at around \num{20000} steps or \num{140} epochs.
 \begin{table}[h]
   \centering
   \begin{tabular}{cccccc}
@@ -104,7 +73,12 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
   \caption{Training parameters used for the distance metrics experiments.
   }\label{tab:unet:params}
 \end{table}
-
+The appropriate loss term weights $\lambda_\text{mae}$ and
+$\lambda_\text{mse}$ were chosen such that the gradient with respect to the
+loss terms yields a similar magnitude. We found that to be the case for
+\num{1e-7}. In an early attempt we also tried to compare \gls{mae} and
+\gls{mse} as loss functions, yet, we did not find significant differences and
+stuck with \gls{mae} which is the distance loss used in the original pixtopix. 
 \begin{table}[h]
   \centering
   \begin{tabular}{ccccc}
@@ -123,6 +97,20 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
     functions, evaluated on the training dataset.
   }\label{tab:unet:training}
 \end{table}
+\Cref{tab:unet:training} lists the metrics for the u-net model trained with
+different loss functions evaluated on the training dataset. The \gls{psnr}
+metric is defined as
+\begin{equation}
+	\psnr{\left(X,Y\right)}
+	=
+	10\log{\left(\frac{M^2}{\mse}\right)}
+	\label{eq:psnr},
+\end{equation}
+wherein $M$ denotes the maximum pixel value, in our case $2^{16}-1$. It is
+useful to quantify the noise level present in the generated \gls{ct} images,
+with a higher \gls{psnr} usually corresponding to lower noise. We remark
+that the \gls{gdl} yields a slightly better result on the \gls{psnr} metric,
+but yields inferior values on \gls{mae} and \gls{mse}.
 \begin{table}[h]
   \centering
   \begin{tabular}{ccccc}
@@ -141,6 +129,20 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
     functions, evaluated on the validation dataset.
   }\label{tab:unet:validation}
 \end{table}
+In \Cref{tab:unet:validation} we see the same metrics evaluated on the
+validation dataset. These metrics are in general more informative than the
+metrics from the training dataset as we expect the networks to overfit. In
+comparison to the \Cref{tab:unet:training} the \gls{mae} are nearly four times
+the \gls{mae} for the training dataset. The \gls{mse} is of one magntiude
+higher which also confirms overfitting. The \gls{psnr} metric obtained from
+the validation dataset is lower than for the training dataset. We should keep
+in mind that for the \gls{psnr} a higher value is usually better and also that
+the \gls{psnr} is scaled logarithmicly. Overall the metrics suggest that our
+network overfits and that the \gls{gdl} slightly decreases the performance.
+Nevertheless we should keep in mind that these metrics are based on
+pixel-wise measures, therefore we need to examine the visual results to draw
+final conclusions and sort out, for instance, possible bias in the subject
+selection of the datasets.
 \begin{figure}[h]
   \centering
   \begin{adjustbox}{width=\linewidth}
@@ -150,6 +152,11 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
     loss functions, evaluated on the training dataset.
   }\label{fig:unet:training}
 \end{figure}
+In \Cref{fig:unet:training} we present the the transverse views for the
+differently trained u-net models evaluated on the training dataset including
+the ground truth on the left. We note that the u-net instance trained with
+\gls{gdl} shows some artifacts outside of the head. Furthermore the soft
+matter structure seems more coarse.
 \begin{figure}[h]
   \centering
   \begin{adjustbox}{width=\linewidth}
@@ -159,9 +166,31 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
     loss functions, evaluated on the validation dataset.
   }\label{fig:unet:validation}
 \end{figure}
+In \Cref{fig:unet:validation} we show the transverse views for the differently
+trained u-net models evaluated on the validation dataset. We can see that
+the overall performance is much worse to unknown data which again suggests
+overfitting. For the first two rows we note that the u-net trained with
+\gls{gdl} loss seems more robust. We conclude that the \gls{gdl} improves
+subjective performance on the validation dataset by a small amount, but
+performance by standard metric seems to be decreased by a small amount.
+Furthermore we want to mention, that the use of the \gls{gdl} requires high
+computational cost.
 
-\subsection{Adversarial Losses}
+\subsection{pixtopix}
 
+In a second part we want to compare the u-net model trained on the \gls{mae}
+with the pixtopix model. As already noted both models differ in that the
+pixtopix uses a discriminator network in order to calculate a least-square
+adverarial loss term. The adversarial least-square loss term was waited with
+$\lambda_\text{adv}=0.01$ and the \gls{mae} term with $\lambda_\text{mae}=1$.
+
+Additionaly we manualy removed incomplete slices from the dataset. These
+incomplete slices arise from the coregistration routine when one volume is
+tilted but does not cover the same region of the fixed volume because of
+different resolution. In \Cref{tab:unet_pixtopix:dataset} we present the
+volumes shapes of the cleaned dataset. In comparison to
+\Cref{tab:unet:dataset} the transverse (depth) resolution has been reduced
+by the incomplete transverse slices we removed.
 \begin{table}[h]
   \centering
   \begin{tabular}{ccc}
@@ -191,7 +220,9 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
     dimensions of the shape correspond to depth, height and width.
   }\label{tab:unet_pixtopix:dataset}
 \end{table}
-
+\Cref{tab:unet_pixtopix:params} lists the training parameters used in the
+following experiments. The pixtopix model required more training steps to
+converge.
 \begin{table}[h]
   \centering
   \begin{tabular}{cccccc}
@@ -207,6 +238,9 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
   \caption{Training parameters used for the u-net and pixtopix comparison.
   }\label{tab:unet_pixtopix:params}
 \end{table}
+\Cref{tab:unet_pixtopix:training} summarizes the evaluation metrics obtained
+for the training dataset. Comparison to \Cref{tab:unet:training} has to be
+done carefully as we used differently preprocessed datasets.
 \begin{table}[h]
   \centering
   \begin{tabular}{ccccc}
@@ -225,6 +259,11 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
     loss, evaluated on the training dataset.
   }\label{tab:unet_pixtopix:training}
 \end{table}
+\Cref{tab:unet_pixtopix:validation} lists the evaluation metrics obtained from
+the validation dataset. Compared to \Cref{tab:unet_pixtopix:training} the
+u-net metrics differ not as much in our former experiments with only the
+u-net architecture. Furthermore we see a large decrease of the pixtopix
+performance on the validation dataset.
 \begin{table}[h]
   \centering
   \begin{tabular}{ccccc}
@@ -243,6 +282,10 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
     loss, evaluated on the validation dataset.
   }\label{tab:unet_pixtopix:training}
 \end{table}
+The visual comparison of the u-net and pixtopix model on the training dataset,
+see \Cref{fig:unet_pixtopix:training} shows very good results for both models.
+The pixtopix model, however, does not show artifacts. Overall the hard and
+soft matter tissue look very similar to the ground truth.
 \begin{figure}[h]
   \centering
   \begin{adjustbox}{width=\linewidth}
@@ -253,6 +296,13 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
     loss, evaluated on the training dataset.
   }\label{fig:unet_pixtopix:training}
 \end{figure}
+The visual comparison of the u-net and pixtopix model on the validation
+dataset, see \Cref{fig:unet_pixtopix:validation} shows that even though the
+metrics on the validation dataset decreased much more relative to the u-net
+metrics, the visual results are much better. For ananatomical characteristics
+general to the human head the pixtopix model is able to successfully reproduce
+\gls{ct} representation from \gls{mri}, however for anatomical features that
+differ greatly between subjects, results are not good.
 \begin{figure}[h]
   \centering
   \begin{adjustbox}{width=\linewidth}
@@ -263,15 +313,23 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
     loss, evaluated on the validation dataset.
   }\label{fig:unet_pixtopix:validation}
 \end{figure}
+Overall we can confirm a large improvement of the \gls{gan} approach compared
+with \gls{cnn} approach. Altough both architecture use the same network for
+the prediction, the adversarial loss term in pixtopix is able to guide the
+optimizer to a better local extrema.
 
 \subsection{Gradient Boost}
 
+As a third experiment we wanted to improve the soft tissue structure of the
+synthesized \gls{ct}s. Therefore we used skull extraction to create masks of
+the brain volume. These masks were then used to increase gradient weight in
+fine-tuning the pixtopix model.
 \begin{table}[h]
   \centering
   \begin{tabular}{cccccc}
     \toprule
     & &
-    \multicolumn{2}{c}{u-net (\gls{mae})} &
+    \multicolumn{2}{c}{u-net} &
     \multicolumn{2}{c}{pixtopix} \\
     Image Slices & Batch Size & Steps & Epochs & Steps & Epochs \\
     \midrule
@@ -282,17 +340,19 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
     fine-tuned pixtopix model.
   }\label{tab:pixtopix:params}
 \end{table}
+In \Cref{tab:pixtopix:params} we summarized the training parameters for the
+fine-tuning experiment. The untuned pixtopix, described in the prevous section,
+was trained for about \num{299} epochs. Then we amended the gradient
+calculation to increase weight of the soft-tissue area and proceeded to train
+for about \num{112} more epochs.
 \begin{table}[h]
   \centering
-  \begin{tabular}{ccccc}
+  \begin{tabular}{cccc}
     \toprule
-    Model & Loss &
-    \acrshort{mae} &
-    \acrshort{mse} &
-    \acrshort{psnr} \\
+    Model & \acrshort{mae} & \acrshort{mse} & \acrshort{psnr} \\
     \midrule
-    pixtopix & least-square & \num{21.56} & \num{4210} & \num{60.38} \\
-    pixtopix (boosted) & least-square & \num{23.37} & \num{4140} & \num{60.30} \\
+    pixtopix & \num{21.56} & \num{4210} & \num{60.38} \\
+    pixtopix (fine-tuned) & \num{23.37} & \num{4140} & \num{60.30} \\
     \bottomrule
   \end{tabular}
   \caption{Distance metrics for the pixtopix model trained with least-square
@@ -302,15 +362,12 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
 \end{table}
 \begin{table}[h]
   \centering
-  \begin{tabular}{ccccc}
+  \begin{tabular}{cccc}
     \toprule
-    Model & Loss &
-    \acrshort{mae} &
-    \acrshort{mse} &
-    \acrshort{psnr} \\
+    Model & \acrshort{mae} & \acrshort{mse} & \acrshort{psnr} \\
     \midrule
-    pixtopix & least-square & \num{112.73} & \num{82173} & \num{47.55} \\
-    pixtopix & least-square & \num{112.23} & \num{79296} & \num{47.68} \\
+    pixtopix & \num{112.73} & \num{82173} & \num{47.55} \\
+    pixtopix (fine-tuned) & \num{112.23} & \num{79296} & \num{47.68} \\
     \bottomrule
   \end{tabular}
   \caption{Distance metrics for the pixtopix model trained with least-square
@@ -318,6 +375,11 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
     the validation dataset.
   }\label{tab:pixtopix:validation}
 \end{table}
+In \Cref{tab:pixtopix:training} and \Cref{tab:pixtopix:validation} the
+evaluation metrics on the training and validation dataset comparing the
+pixtopix model with the fine-tuned pixtopix model are presented. For the
+\gls{mae} and \gls{mse} we see a small improvement of the fine-tuned model
+on the validation dataset.
 \begin{figure}[h]
   \centering
   \begin{adjustbox}{width=\linewidth}
@@ -338,4 +400,11 @@ wherein the $\lambda$ denotes the weight of the respective loss term.
     the validation dataset.
   }\label{fig:pixtopix:validation}
 \end{figure}
-
+In \Cref{fig:pixtopix:training} and \Cref{fig:pixtopix:validation} we show
+the visual results of the two pixtopix variants. Altough some results, for
+instance the last row from the training results, suggest an improved fine
+structure of the soft tissue, we cannot definetly conclude that fine-tuning
+with incresed soft-tissue weights yields better soft-tissue results, however,
+we should keep in mind that we might not found the correct fine-tuning
+parameters and that a further increase in order to compensate for the
+exponential decay of the optimizer is necessary.

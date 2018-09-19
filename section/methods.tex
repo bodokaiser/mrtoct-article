@@ -39,10 +39,7 @@ dataset also offer \gls{pd} and \gls{mp} \gls{rage} weighted \gls{mri}s. Some
 used the \gls{t1} weighted \gls{mri} together with the \gls{ct} as input and
 target data as these give us the highest subject count. However, it would be
 an interesting experiment to supply different \gls{mri}s as multi-channel
-input. The \num{17} subjects were divided into \gls{13} subjects for training
-and \gls{4} subjects for validation. We respected the transverse resolution,
-i.e.\ the number of transverse slices, for the division of the dataset, in
-that the validation subjects offer a high transverse resolution.
+input.
 
 \subsection{Preprocessing}
 
@@ -415,13 +412,14 @@ network that outputs a score map for real $D(X)$ and fake data $D(Y)=D(G(Z))$,
 where $G(Z)$ is the generator output from the input vector $Z$, the
 standard adversarial loss is defined as
 \begin{equation}
-  -\log(\D(X))-\log(1-D(G(Z)))
+  \log(D(X))+\log(1-D(G(Z)))
   \label{eq:adv:minmax}.
 \end{equation}
 Recently a modified least-squared adversarial loss
 \begin{equation}
-  -\log{\left(\D{(X)}^2\right)}-\log{\left({(1-D{\left(G{(Z)}\right)})}^2\right)}
+  \log{\left(D{(X)}^2\right)}+\log{\left({(1-D{\left(G{(Z)}\right)})}^2\right)}
   \label{eq:adv:lsquare},
 \end{equation}
 has been reported that yields superior results and more stable training
-characteristics~\cite{Mao2016}.
+characteristics~\cite{Mao2016}. The least-squared adversarial loss is used
+in the pixtopix model.
