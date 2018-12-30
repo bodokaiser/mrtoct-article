@@ -1,8 +1,8 @@
-\section{Method}
+\section{Methods}
 
 \subsection{Dataset}
 
-Though several \gls{mri} and \gls{ct} datasets available, for instance,
+Though many datasets involving \gls{mri} and \gls{ct} data exist, for instance,
 \gls{oasis}~\cite{OASIS} or \gls{adni}~\cite{ADNI}, public datasets in which
 both modalities are obtainable for the same subject are, to date, rare. To our
 knowledge only the \gls{rire} project~\cite{RIRE} and the Cancer Imaging
@@ -72,8 +72,8 @@ For the present work we choose the \gls{ct} volume to be fixed, as the
 \gls{ct} volumes are in general spatially normalized accross different
 subjects. Because the different modalities have in general different
 resolutions, we found that for the lower resolution modality the
-coregistration produced incomplete images for the transverse slices at the
-boundary. We manually removed these slices from the dataset.
+coregistration produced artifacts at the boundaries of the transverse plane.
+We manually removed these slices from the dataset.
 \begin{figure}[h]
   \centering
   \includegraphics[page=2,width=.8\linewidth]{figure/diagrams.pdf}
@@ -83,32 +83,36 @@ boundary. We manually removed these slices from the dataset.
 \end{figure}
 Following the coregistration, we used the binary fill holes algorithm from
 SciPy~\cite{SciPy} as an attempt to remove the \gls{ct} table present in some
-\gls{ct} volumes as well as well as the background noise.\footnote{The complete
+\gls{ct} volumes as well as background noise.\footnote{The complete
 preprocessing described so far is available at
 \url{https://github/bodokaiser/mrtoct-scripts}.} Finally we converted the
 preprocessed pairs of \gls{mri} and \gls{ct} volumes to the tfrecord format
 in order to easily read the data into Tensorflow~\cite{Tensorflow15}. As part
 of the data pipeline implemented with Tensorflow we perform a pad or crop to
-either $384\times384$ for transverse 2D slices. In the 3D case we perform
+either $384\times384$ for transverse 2D slices. In the 3D case we performed
 patch extraction of target shape $32\times32\times32$ for \gls{mri} and
 $16\times16\times16$ for \gls{ct}. The target shape for the 2D slices was
-choosen a compromise between compatibility with the convolution parameters and
-reducing crop on the volumes. Furtheremore we applied a min-max-normalization
-in order to keep floating range arthimetic in a range of $[0,1]$.
+choosen as a compromise between compatibility with the convolution parameters
+and reducing crop on the volumes. Furtheremore we applied a
+min-max-normalization in order to keep floating range arthimetic in a range
+of $[0,1]$.
 
 \subsection{Models}
 
-We implemented three different neural network models for the \gls{mri} to
-\gls{ct} synthesis task. The first and most simple model is based on the
-u-net model~\cite{Ronneberger15} and uses standard error metric, i.e.\
-\gls{mae} and \gls{mse}. The second model is based on pix2pix~\cite{Isola16},
-which already has proven great success in the task of image translation. It
-uses the first u-net based model as generator in addition to a discriminator
-model to calculate the adversarial loss. As third model we implemented the
-context-aware 3D synthesis GAN from Nie~\cite{Nie16}. In comparison to the
-other two models, which operate on the transverse 2D slices of the brain, it
-is applied to 3D patches. Training an interferenc was implemented using
-Tensorflow~\cite{Tensorflow15}.\footnote{The implementation is available at
+We attempted to implement three different neural network models for the
+\gls{mri} to \gls{ct} synthesis task. The first and most simple model is based
+on the popular u-net model~\cite{Ronneberger15} in combination with a
+standard error metric, i.e.\ \gls{mae} and \gls{mse}. The second model is
+based on pix2pix~\cite{Isola16}, which already has proven great success in the
+task of image translation. It uses a u-net based model as generator in
+addition to a simple discriminator model to calculate the adversarial loss. As
+third and last model we attempted an implementation of the context-aware 3D
+synthesis GAN from Nie~\cite{Nie16}. Unfortunately we found our implementation
+of the patch reconstruction to be too resource intensive for practical
+purpose. In comparison to the other two models, which operate on the
+transverse 2D slices of the brain, it is applied to 3D patches. Training and
+interferen were implemented using the Tensorflow~\cite{Tensorflow15}
+framework.\footnote{The implementation is available at
 \url{https://github/bodokaiser/mrtoct-tensorflow}.}
 
 \subsubsection{u-net}
@@ -124,21 +128,21 @@ layers.
   }\label{fig:unet:gen}
 \end{figure}
 In \Cref{fig:unet:gen} the u-net architecture is illustrated. We remark the
-two paths of data flow: for one the image is passed through a seqeunce of
+two paths of data flow: for one the image is passed through a sequence of
 encoders and decoders, then again data can flow from one encoder stage
 directly to the corresponding decoder stage. The encoder encode localized
 features while the decoders decode an image from the previous layer and the
 corresponding encoder stage.
-In comparison to the original u-net we reduced the convolution layers and
-replaced the max pooling in the decoder blocks with deconvolution (also called
-transposed convolution) layers. Furthermore we used Leaky ReLUs in the
+We adapted the specific u-net based architecture from pixtopix. In comparison
+to the original formulation the number convolution layers are reduced and
+the max pooling in the decoder blocks were replaced by deconvolution (also known
+as transposed convolution) layers. Furthermore we used Leaky ReLUs in the
 encoders instead of usual ReLUs. Except for the first encoder we applied batch
-normalization inbetween the convolution and activation. Another novelty
-relative to the original u-net is the use of dropout layers in the first and
-second decoder. Dropout layer are known to improve network generalization by
-randomly suppressing features from the training process~\cite{Srivastava2014}.
-The changes to the original u-net architecture are mainly inspired by the
-u-net like generator used in pixtopix.
+normalization inbetween the convolution and activation layers. Another
+difference relative to the original scheme there is a use of dropout layers
+after the first and second decoder. Dropout layers are known to improve
+network generalization by randomly suppressing features from the training
+process~\cite{Srivastava2014}.
 \begin{table}[h]
   \centering
   \begin{tabular}{cccc}
@@ -174,10 +178,10 @@ if not noted otherwise.
 The pixtopix model uses the previously introduced u-net architecture as
 generator to translate an input \gls{mri} to \gls{ct}. In addition, pixtopix
 utilizes a second network, the discriminator network, to output a score map
-that distinguishes between real and fake \gls{ct}. In this context real
-\gls{ct}s correspond to the target \gls{ct} provided by the training dataset
-and fake \gls{ct}s correspond to the output \gls{ct} provided by the
-generator. In this sense one is able to add an adversarial loss term to the
+that distinguishes between real and fake \gls{ct}, wherein the term real
+\gls{ct} corresponds to a \gls{ct} propably obtained from the ground truth
+and fake \gls{ct} correspond to a probable output of the generation
+In this sense one is able to add an adversarial loss term to the
 standard metric loss, that maximizes the identification of real \gls{ct}s
 while minimizing the missidentification of fake \gls{ct}s as real
 ones~\cite{Goodfellow14}.
@@ -331,7 +335,7 @@ weights. The network weights are then updated according to their respective
 gradient and a convergence parameter of the optimizer. In this manner one
 hopes to find the optimal weights for a specific task.
 
-For our experiments we used the Adam optimizer, see Ref.~\cite{Kingma2014},
+In our experiments we relied on the Adam optimizer, see Ref.~\cite{Kingma2014},
 with the parameters listed in \Cref{tab:optimizer}.
 \begin{table}[h]
   \centering
@@ -346,7 +350,8 @@ with the parameters listed in \Cref{tab:optimizer}.
   }\label{tab:optimizer}
 \end{table}
 These parameters were choosen empirically for fast convergence and good
-results. That said there may of course exist better parameters.
+results. That said there may of course exist better parameters. We did not
+perform grid search or other hyperparameter optimization techniques.
 
 \subsubsection{Distance}
 

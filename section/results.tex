@@ -1,15 +1,15 @@
 \section{Experiments}
 
-We had difficulties with the implementation of the patch aggregation required
-for the implementation of the context-aware 3D synthesis. Though patch
-aggregation worked in general, it occupied more computational resources than
-the actual training. Unfortunatly we were not able to find a workaround or to
-allocate more computation quota. Therefor we did not perform more than one
-iteration of the auto-context model, which prevented a fair comparison.
-However, we encourage everyone to test our implementation themselves.
+As noted earlier, we ran into practical challenges with our implementation of
+the patch aggregation algorithm required for the implementation of the
+context-aware 3D synthesis. Though patch aggregation worked in general, it
+occupied more computational resources than we could consume without the
+interference with other projects. As a result we did not perform more than one
+iteration of the auto-context model, which prevents us from a fair comparison,
+however, we encourage everyone to test our implementation themselves.
 
-As a consequence we only conducted experiments with the u-net \gls{cnn} and
-the pixtopix \gls{gan}.
+Consequently we will only report results obtained with the u-net \gls{cnn} and
+the pixtopix \gls{gan} model.
 
 \subsection{u-net}
 
